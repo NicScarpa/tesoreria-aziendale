@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.002.001.03">
+  <CstmrPmtStsRpt>
+    <GrpHdr>
+      <MsgId>PAIN002-20260201-001</MsgId>
+      <CreDtTm>2026-02-01T14:00:00</CreDtTm>
+    </GrpHdr>
+    <OrgnlGrpInfAndSts>
+      <OrgnlMsgId>PAIN001-20260131-001</OrgnlMsgId>
+      <OrgnlMsgNmId>pain.001.001.03</OrgnlMsgNmId>
+    </OrgnlGrpInfAndSts>
+    <OrgnlPmtInfAndSts>
+      <OrgnlPmtInfId>PMT-001</OrgnlPmtInfId>
+      <TxInfAndSts>
+        <OrgnlInstrId>INSTR-001</OrgnlInstrId>
+        <OrgnlEndToEndId>E2E-PAYMENT-001</OrgnlEndToEndId>
+        <TxSts>ACCP</TxSts>
+      </TxInfAndSts>
+      <TxInfAndSts>
+        <OrgnlInstrId>INSTR-002</OrgnlInstrId>
+        <OrgnlEndToEndId>E2E-PAYMENT-002</OrgnlEndToEndId>
+        <TxSts>RJCT</TxSts>
+        <StsRsnInf>
+          <Rsn><Cd>AC04</Cd></Rsn>
+          <AddtlInf>Conto chiuso</AddtlInf>
+        </StsRsnInf>
+      </TxInfAndSts>
+    </OrgnlPmtInfAndSts>
+  </CstmrPmtStsRpt>
+</Document>

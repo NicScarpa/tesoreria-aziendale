@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.02">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>CAMT053-20260201-001</MsgId>
+      <CreDtTm>2026-02-01T12:00:00</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>STMT-001</Id>
+      <CreDtTm>2026-02-01T12:00:00</CreDtTm>
+      <Acct>
+        <Id><IBAN>IT60X0542811101000000123456</IBAN></Id>
+        <Ccy>EUR</Ccy>
+      </Acct>
+      <Bal>
+        <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>
+        <Amt Ccy="EUR">150000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt><Dt>2026-01-31</Dt></Dt>
+      </Bal>
+      <Bal>
+        <Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp>
+        <Amt Ccy="EUR">155500.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt><Dt>2026-02-01</Dt></Dt>
+      </Bal>
+      <Ntry>
+        <Amt Ccy="EUR">15000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <BookgDt><Dt>2026-02-01</Dt></BookgDt>
+        <ValDt><Dt>2026-02-01</Dt></ValDt>
+        <AcctSvcrRef>REF-001</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <RltdPties><Dbtr><Nm>ABC SRL</Nm></Dbtr></RltdPties>
+            <RmtInf><Ustrd>Pagamento fattura FV-2026-001</Ustrd></RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">3500.00</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <BookgDt><Dt>2026-02-01</Dt></BookgDt>
+        <ValDt><Dt>2026-02-01</Dt></ValDt>
+        <AcctSvcrRef>REF-002</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <RltdPties><Cdtr><Nm>Mario Rossi</Nm></Cdtr></RltdPties>
+            <RmtInf><Ustrd>Stipendio febbraio 2026</Ustrd></RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">8000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <BookgDt><Dt>2026-02-01</Dt></BookgDt>
+        <ValDt><Dt>2026-02-01</Dt></ValDt>
+        <AcctSvcrRef>REF-003</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <RltdPties><Dbtr><Nm>XYZ Trading SPA</Nm></Dbtr></RltdPties>
+            <RmtInf><Ustrd>Pagamento ordine ORD-2026-042</Ustrd></RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

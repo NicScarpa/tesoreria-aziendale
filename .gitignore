@@ -1,0 +1,47 @@
+# Credenziali
+credenziali.env
+.env
+backend/.env
+
+# File temporanei
+.tmp/
+.pytest_cache/
+
+# Tooling locali (agent/editor)
+.agent/
+.agents/
+.claude/
+.continue/
+.cursor/
+.playwright-mcp/
+
+# Backup metadata repo annidata
+frontend/.git.backup-*/
+
+# HAR files (troppo grandi)
+assets/har/
+*.har
+
+# Node
+node_modules/
+
+# Next.js
+.next/
+frontend/.next/
+frontend/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+backend/uploads/
+generated_payments/
+
+# IDE
+.idea/
+.vscode/
+*.swp
