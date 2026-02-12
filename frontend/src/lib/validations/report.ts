@@ -11,15 +11,15 @@ export const createReportDefinitionSchema = z.object({
     ])
     .default("personalizzato"),
   formato_default: z.enum(["pdf", "xlsx", "csv"]).default("pdf"),
-  parametri_default: z.record(z.unknown()).nullable().optional(),
-  layout: z.record(z.unknown()).nullable().optional(),
+  parametri_default: z.record(z.string(), z.unknown()).nullable().optional(),
+  layout: z.record(z.string(), z.unknown()).nullable().optional(),
 });
 
 export type CreateReportDefinitionInput = z.input<typeof createReportDefinitionSchema>;
 
 export const generateReportSchema = z.object({
   formato: z.enum(["pdf", "xlsx", "csv"]).default("pdf"),
-  parametri: z.record(z.unknown()).nullable().optional(),
+  parametri: z.record(z.string(), z.unknown()).nullable().optional(),
 });
 
 export type GenerateReportInput = z.input<typeof generateReportSchema>;
@@ -29,7 +29,7 @@ export const createScheduleSchema = z.object({
   nome: z.string().min(1, "Nome obbligatorio").max(255),
   frequenza: z.enum(["giornaliero", "settimanale", "mensile", "trimestrale"]),
   formato: z.enum(["pdf", "xlsx", "csv"]).default("pdf"),
-  parametri: z.record(z.unknown()).nullable().optional(),
+  parametri: z.record(z.string(), z.unknown()).nullable().optional(),
 });
 
 export type CreateScheduleInput = z.input<typeof createScheduleSchema>;
