@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plug, Landmark, FileText, Building2, Webhook, Plus, Trash2, Copy } from "lucide-react";
+import { Plug, Landmark, FileText, Building2, Scale, Webhook, Plus, Trash2, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { getOverview, listWebhooks, createWebhook, deleteWebhook } from "@/lib/api/integrations";
+import { getOverview, listWebhooks, createWebhook, deleteWebhook, toggleIntegration } from "@/lib/api/integrations";
 import type { IntegrationStatusItem, WebhookEndpoint } from "@/types/integration";
 import { INTEGRATION_STATUS_LABELS, INTEGRATION_STATUS_COLORS, WEBHOOK_TYPE_LABELS } from "@/types/integration";
 import { PageHeader } from "@/components/shared/page-header";
@@ -14,17 +14,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 const INTEGRATION_ICONS: Record<string, typeof Plug> = {
   open_banking: Landmark,
   fatture_elettroniche: FileText,
   cbi_corporate_banking: Building2,
+  agenzia_entrate: Scale,
 };
 
 const INTEGRATION_ROUTES: Record<string, string> = {
   open_banking: "/integrazioni/open-banking",
   fatture_elettroniche: "/integrazioni/fatture",
   cbi_corporate_banking: "/integrazioni/cbi-sepa",
+  agenzia_entrate: "/integrazioni/agenzia-entrate",
 };
 
 export default function IntegrazioniPage() {
@@ -32,6 +35,7 @@ export default function IntegrazioniPage() {
   const [integrations, setIntegrations] = useState<IntegrationStatusItem[]>([]);
   const [webhooks, setWebhooks] = useState<WebhookEndpoint[]>([]);
   const [loading, setLoading] = useState(true);
+  const [toggling, setToggling] = useState<Record<string, boolean>>({});
   const [webhookType, setWebhookType] = useState("open_banking_sync");
   const [showWebhooks, setShowWebhooks] = useState(false);
 
@@ -74,6 +78,22 @@ export default function IntegrazioniPage() {
     }
   };
 
+  const handleToggleIntegration = async (integrationType: string, enabled: boolean) => {
+    setToggling((m) => ({ ...m, [integrationType]: true }));
+    try {
+      await toggleIntegration(integrationType, enabled);
+      setIntegrations((prev) =>
+        prev.map((it) => (it.integration_type === integrationType ? { ...it, is_enabled: enabled } : it))
+      );
+      toast.success(enabled ? "Integrazione attivata" : "Integrazione disattivata");
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { detail?: string } } };
+      toast.error(axiosErr?.response?.data?.detail || "Errore nell'aggiornamento integrazione");
+    } finally {
+      setToggling((m) => ({ ...m, [integrationType]: false }));
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -92,6 +112,7 @@ export default function IntegrazioniPage() {
         {integrations.map((item) => {
           const Icon = INTEGRATION_ICONS[item.integration_type] || Plug;
           const route = INTEGRATION_ROUTES[item.integration_type];
+          const busy = Boolean(toggling[item.integration_type]);
           return (
             <Card key={item.integration_type} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => route && router.push(route)}>
               <CardHeader className="flex flex-row items-center gap-3 pb-2">
@@ -101,12 +122,22 @@ export default function IntegrazioniPage() {
                 <div className="flex-1">
                   <CardTitle className="text-base">{item.label}</CardTitle>
                 </div>
+                <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                  <Switch
+                    checked={Boolean(item.is_enabled)}
+                    disabled={busy}
+                    onCheckedChange={(v) => handleToggleIntegration(item.integration_type, Boolean(v))}
+                  />
+                </div>
                 <Badge className={INTEGRATION_STATUS_COLORS[item.status]}>
                   {INTEGRATION_STATUS_LABELS[item.status]}
                 </Badge>
               </CardHeader>
               <CardContent>
                 <CardDescription>{item.description}</CardDescription>
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Stato: <strong>{item.is_enabled ? "Attiva" : "Disattiva"}</strong>
+                </div>
               </CardContent>
             </Card>
           );

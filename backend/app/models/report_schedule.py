@@ -68,3 +68,12 @@ class ReportSchedule(Base):
         Index("ix_report_schedules_company_attivo", "company_id", "attivo"),
         Index("ix_report_schedules_prossima_attivo", "prossima_esecuzione", "attivo"),
     )
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.formato is None:
+            self.formato = ReportFormat.PDF
+        if self.parametri is None:
+            self.parametri = {}
+        if self.attivo is None:
+            self.attivo = True

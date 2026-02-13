@@ -1,6 +1,6 @@
 // --- Enum types ---
 
-export type IntegrationType = "open_banking" | "fatture_elettroniche" | "cbi_corporate_banking";
+export type IntegrationType = "open_banking" | "fatture_elettroniche" | "cbi_corporate_banking" | "agenzia_entrate";
 
 export type IntegrationConnectionStatus = "non_configurata" | "configurata" | "connessa" | "errore";
 
@@ -30,6 +30,7 @@ export const INTEGRATION_TYPE_LABELS: Record<IntegrationType, string> = {
   open_banking: "Open Banking",
   fatture_elettroniche: "Fatture Elettroniche",
   cbi_corporate_banking: "CBI Corporate Banking",
+  agenzia_entrate: "Agenzia Entrate",
 };
 
 export const INTEGRATION_STATUS_LABELS: Record<IntegrationConnectionStatus, string> = {
@@ -312,5 +313,71 @@ export interface IntegrationAlertsCount {
   consents_expiring: number;
   invoices_pending: number;
   sync_errors: number;
+  total: number;
+}
+
+// --- Agenzia Entrate (Entratel/Fisconline) ---
+
+export interface AdETestResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface AdESyncResult {
+  success: boolean;
+  scope: string;
+  imported_new: number;
+  updated: number;
+  failed: number;
+  pending?: boolean;
+  external_request_id?: string | null;
+  message?: string | null;
+}
+
+export interface InvoiceMonthlyData {
+  mese: string;
+  emesse: number;
+  ricevute: number;
+}
+
+export interface InvoiceCounterpartData {
+  nome: string;
+  totale: number;
+  documenti: number;
+  percentuale: number;
+}
+
+export interface InvoiceStats {
+  emesse_count: number;
+  emesse_totale: number;
+  ricevute_count: number;
+  ricevute_totale: number;
+  da_elaborare: number;
+  per_mese: InvoiceMonthlyData[];
+  top_clienti: InvoiceCounterpartData[];
+  top_fornitori: InvoiceCounterpartData[];
+}
+
+export interface ReceiptImport {
+  id: string;
+  company_id: string;
+  business_date: string;
+  external_id: string | null;
+  device_id: string | null;
+  time_rilevazione: string | null;
+  gross_total: number | null;
+  net_total: number | null;
+  vat_total: number | null;
+  currency: string;
+  source: string;
+  status: string;
+  raw_available: boolean;
+  errore_dettaglio: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReceiptImportListResponse {
+  items: ReceiptImport[];
   total: number;
 }

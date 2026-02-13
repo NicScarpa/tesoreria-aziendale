@@ -514,6 +514,7 @@ class IntegrationType(str, enum.Enum):
     OPEN_BANKING = "open_banking"
     FATTURE_ELETTRONICHE = "fatture_elettroniche"
     CBI_CORPORATE_BANKING = "cbi_corporate_banking"
+    AGENZIA_ENTRATE = "agenzia_entrate"
 
 
 class IntegrationConnectionStatus(str, enum.Enum):

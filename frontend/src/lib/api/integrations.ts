@@ -18,6 +18,10 @@ import type {
   CAMT053ImportResult,
   WebhookEndpoint,
   WebhookListResponse,
+  AdETestResponse,
+  AdESyncResult,
+  ReceiptImportListResponse,
+  ReceiptImport,
 } from "@/types/integration";
 
 // --- Config Hub ---
@@ -49,6 +53,42 @@ export async function testConnection(tipo: string) {
 
 export async function toggleIntegration(tipo: string, is_enabled: boolean) {
   const resp = await api.put<IntegrationConfig>(`/integrations/${tipo}/toggle`, { is_enabled });
+  return resp.data;
+}
+
+// --- Agenzia Entrate (Entratel/Fisconline) ---
+
+export async function adeTestConnection(debug?: boolean) {
+  const query = debug ? "?debug=true" : "";
+  const resp = await api.post<AdETestResponse>(`/integrations/agenzia-entrate/test${query}`);
+  return resp.data;
+}
+
+export async function adeSyncInvoices(data: { date_from: string; date_to: string; direction: "issued" | "received"; debug?: boolean }) {
+  const resp = await api.post<AdESyncResult>("/integrations/agenzia-entrate/sync/invoices", data);
+  return resp.data;
+}
+
+export async function adeSyncCorrispettivi(data: { date_from: string; date_to: string; debug?: boolean }) {
+  const resp = await api.post<AdESyncResult>("/integrations/agenzia-entrate/sync/corrispettivi", data);
+  return resp.data;
+}
+
+export async function listCorrispettivi(params?: Record<string, string | number>) {
+  const query = params ? "?" + new URLSearchParams(
+    Object.entries(params).map(([k, v]) => [k, String(v)])
+  ).toString() : "";
+  const resp = await api.get<ReceiptImportListResponse>(`/integrations/corrispettivi${query}`);
+  return resp.data;
+}
+
+export async function getCorrispettivo(id: string) {
+  const resp = await api.get<ReceiptImport>(`/integrations/corrispettivi/${id}`);
+  return resp.data;
+}
+
+export async function downloadCorrispettivoRaw(id: string) {
+  const resp = await api.get(`/integrations/corrispettivi/${id}/raw`, { responseType: "blob" });
   return resp.data;
 }
 
@@ -186,6 +226,22 @@ export async function listBatches(page?: number, pageSize?: number) {
 export async function getBatch(id: string) {
   const resp = await api.get<InvoiceImportBatch>(`/integrations/invoices/batches/${id}`);
   return resp.data;
+}
+
+export async function getInvoiceStats(params?: Record<string, string | number>) {
+  const query = params ? "?" + new URLSearchParams(
+    Object.entries(params).map(([k, v]) => [k, String(v)])
+  ).toString() : "";
+  const resp = await api.get(`/integrations/invoices/stats${query}`);
+  return resp.data;
+}
+
+export async function listInvoicesWithDirection(
+  direction: "emesse" | "ricevute",
+  params?: Record<string, string | number>
+) {
+  const merged: Record<string, string | number> = { ...params, direction };
+  return listInvoices(merged);
 }
 
 // --- CBI/SEPA ---

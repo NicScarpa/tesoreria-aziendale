@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { FileText, Upload, Search, ChevronLeft, ChevronRight, Download, CheckCircle, XCircle, Eye } from "lucide-react";
+import { FileText, Upload, Search, ChevronLeft, ChevronRight, Download, CheckCircle, XCircle, Eye, Scale, RefreshCw, Bug } from "lucide-react";
 import { toast } from "sonner";
 import {
   listInvoices,
@@ -12,6 +12,7 @@ import {
   elaborateBatch,
   uploadBatch,
   listBatches,
+  adeSyncInvoices,
 } from "@/lib/api/integrations";
 import type { InvoiceImport, InvoiceImportBatch } from "@/types/integration";
 import {
@@ -32,6 +33,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 function formatCurrency(value: number | null): string {
   if (value === null) return "\u2014";
@@ -41,6 +45,15 @@ function formatCurrency(value: number | null): string {
 function formatDate(d: string | null): string {
   if (!d) return "\u2014";
   return new Date(d).toLocaleDateString("it-IT");
+}
+
+function todayISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function yearStartISO(): string {
+  const y = new Date().getFullYear();
+  return `${y}-01-01`;
 }
 
 export default function FatturePage() {
@@ -63,6 +76,15 @@ export default function FatturePage() {
   const [statoFilter, setStatoFilter] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  // AdE import dialog
+  const [showAdeImport, setShowAdeImport] = useState(false);
+  const [adeFrom, setAdeFrom] = useState(yearStartISO());
+  const [adeTo, setAdeTo] = useState(todayISO());
+  const [adeIssued, setAdeIssued] = useState(true);
+  const [adeReceived, setAdeReceived] = useState(true);
+  const [adeDebug, setAdeDebug] = useState(false);
+  const [adeImporting, setAdeImporting] = useState(false);
 
   // Detail sheet
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceImport | null>(null);
@@ -175,6 +197,35 @@ export default function FatturePage() {
     }
   };
 
+  const handleAdeImport = async () => {
+    if (!adeFrom || !adeTo) {
+      toast.error("Seleziona il range date");
+      return;
+    }
+    if (!(adeIssued || adeReceived)) {
+      toast.error("Seleziona almeno Emesse o Ricevute");
+      return;
+    }
+    setAdeImporting(true);
+    try {
+      if (adeIssued) {
+        const r = await adeSyncInvoices({ date_from: adeFrom, date_to: adeTo, direction: "issued", debug: adeDebug });
+        toast.success(r.message || `Emesse: +${r.imported_new}, dup ${r.updated}, err ${r.failed}`);
+      }
+      if (adeReceived) {
+        const r = await adeSyncInvoices({ date_from: adeFrom, date_to: adeTo, direction: "received", debug: adeDebug });
+        toast.success(r.message || `Ricevute: +${r.imported_new}, dup ${r.updated}, err ${r.failed}`);
+      }
+      setShowAdeImport(false);
+      loadData();
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { detail?: string } } };
+      toast.error(axiosErr?.response?.data?.detail || "Errore import da AdE");
+    } finally {
+      setAdeImporting(false);
+    }
+  };
+
   if (loading && invoices.length === 0) {
     return (
       <div className="space-y-6">
@@ -191,6 +242,10 @@ export default function FatturePage() {
         description="Importa e gestisci fatture FatturaPA"
         actions={
           <div className="flex gap-2">
+            <Button variant="outline" disabled={adeImporting} onClick={() => setShowAdeImport(true)}>
+              <Scale className="h-4 w-4 mr-2" />
+              Importa da AdE
+            </Button>
             <Button variant="outline" disabled={uploading} onClick={() => batchInputRef.current?.click()}>
               <Upload className="h-4 w-4 mr-2" />
               Carica Multiple
@@ -208,6 +263,51 @@ export default function FatturePage() {
           </div>
         }
       />
+
+      <Dialog open={showAdeImport} onOpenChange={setShowAdeImport}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Importa Fatture da Agenzia Entrate</DialogTitle>
+            <DialogDescription>Il backend apre un browser headless e scarica i file dal portale.</DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="space-y-1">
+              <Label>Data da</Label>
+              <Input type="date" value={adeFrom} onChange={(e) => setAdeFrom(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Data a</Label>
+              <Input type="date" value={adeTo} onChange={(e) => setAdeTo(e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Checkbox checked={adeIssued} onCheckedChange={(v) => setAdeIssued(Boolean(v))} />
+              <span className="text-sm">Fatture emesse</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox checked={adeReceived} onCheckedChange={(v) => setAdeReceived(Boolean(v))} />
+              <span className="text-sm">Fatture ricevute</span>
+            </div>
+            <div className="flex items-center gap-2 pt-2">
+              <Checkbox checked={adeDebug} onCheckedChange={(v) => setAdeDebug(Boolean(v))} />
+              <span className="text-sm flex items-center gap-1">
+                <Bug className="h-4 w-4" /> Debug (salva screenshot/HTML)
+              </span>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAdeImport(false)} disabled={adeImporting}>Annulla</Button>
+            <Button onClick={handleAdeImport} disabled={adeImporting}>
+              <RefreshCw className={`h-4 w-4 mr-2 ${adeImporting ? "animate-spin" : ""}`} />
+              Avvia
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>

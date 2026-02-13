@@ -59,3 +59,20 @@ class ReportDefinition(Base):
         Index("ix_report_definitions_company_preferito", "company_id", "is_preferito"),
         Index("ix_report_definitions_company_system", "company_id", "is_system"),
     )
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # SQLAlchemy column defaults are applied at INSERT time; tests expect
+        # Python-level defaults on newly created objects.
+        if self.formato_default is None:
+            self.formato_default = ReportFormat.PDF
+        if self.parametri_default is None:
+            self.parametri_default = {}
+        if self.layout is None:
+            self.layout = {}
+        if self.is_system is None:
+            self.is_system = False
+        if self.is_preferito is None:
+            self.is_preferito = False
+        if self.sort_order is None:
+            self.sort_order = 0

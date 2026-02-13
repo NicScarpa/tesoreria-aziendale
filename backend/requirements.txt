@@ -12,6 +12,7 @@ httpx
 python-dotenv
 email-validator
 python-dateutil
+playwright
 reportlab
 openpyxl
 matplotlib

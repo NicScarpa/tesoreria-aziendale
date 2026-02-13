@@ -67,3 +67,5 @@ from app.models.open_banking_connection import OpenBankingConnection  # noqa: F4
 from app.models.open_banking_sync_log import OpenBankingSyncLog  # noqa: F401
 from app.models.invoice_import_batch import InvoiceImportBatch  # noqa: F401
 from app.models.invoice_import import InvoiceImport  # noqa: F401
+from app.models.receipt_import import ReceiptImport  # noqa: F401
+from app.models.ade_sync_log import AdeSyncLog  # noqa: F401

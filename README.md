@@ -30,6 +30,10 @@ DATABASE_URL=postgresql://nicolascarpa@localhost:5433/tesoreria_dev
 SECRET_KEY=<genera con: python3 -c "import secrets; print(secrets.token_hex(32))">
 ACCESS_TOKEN_EXPIRE_MINUTES=15
 REFRESH_TOKEN_EXPIRE_DAYS=7
+FERNET_KEY=<genera con: python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())">
+
+# (Opzionale) Agenzia Entrate - override login url (le credenziali si inseriscono da UI)
+# ADE_LOGIN_URL=https://ivaservizi.agenziaentrate.gov.it/portale/
 ```
 
 ### 3. Backend

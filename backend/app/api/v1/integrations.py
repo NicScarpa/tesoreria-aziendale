@@ -1,4 +1,5 @@
 """Integration module API endpoints."""
+from datetime import date
 import uuid
 from typing import Annotated
 
@@ -10,6 +11,12 @@ from app.models.enums import IntegrationType, InvoiceStatus, UserRole, WebhookTy
 from app.schemas.integration import (
     CAMT053ImportResponse,
     CBIParseResponse,
+    AdETestResponse,
+    AdESyncInvoicesRequest,
+    AdESyncCorrispettiviRequest,
+    AdESyncResultResponse,
+    ReceiptImportResponse,
+    ReceiptImportListResponse,
     IntegrationAlertsCount,
     IntegrationConfigResponse,
     IntegrationConfigUpdate,
@@ -23,6 +30,7 @@ from app.schemas.integration import (
     InvoiceImportBatchResponse,
     InvoiceImportListResponse,
     InvoiceImportResponse,
+    InvoiceStatsResponse,
     OpenBankingConnectRequest,
     OpenBankingConnectionListResponse,
     OpenBankingConnectionResponse,
@@ -35,9 +43,11 @@ from app.schemas.integration import (
     WebhookListResponse,
 )
 from app.services import (
+    ade_integration_service,
     integration_config_service,
     invoice_import_service,
     open_banking_service,
+    receipt_import_service,
     webhook_service,
 )
 
@@ -254,6 +264,7 @@ def list_invoices(
     search: str | None = None,
     importo_min: float | None = None,
     importo_max: float | None = None,
+    direction: str | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
 ):
@@ -268,12 +279,24 @@ def list_invoices(
         data_da=d_da, data_a=d_a,
         cedente_piva=cedente_piva, search=search,
         importo_min=importo_min, importo_max=importo_max,
+        direction=direction,
         page=page, page_size=page_size,
     )
     return InvoiceImportListResponse(
         items=[InvoiceImportResponse.model_validate(i) for i in items],
         total=total,
     )
+
+
+@router.get("/invoices/stats", response_model=InvoiceStatsResponse)
+def get_invoice_stats(
+    db: DB, company_data: CurrentCompany,
+    anno: int | None = None,
+    mese: int | None = None,
+):
+    company, _uc = company_data
+    stats = invoice_import_service.get_invoice_stats(db, company.id, anno=anno, mese=mese)
+    return InvoiceStatsResponse(**stats)
 
 
 @router.get("/invoices/batches", response_model=InvoiceBatchListResponse)
@@ -482,6 +505,106 @@ def delete_webhook(
     return {"message": "Webhook eliminato"}
 
 
+# ===== Agenzia Entrate (Entratel/Fisconline) =====
+
+@router.post("/agenzia-entrate/test", response_model=AdETestResponse)
+def ade_test_connection(
+    db: DB,
+    company_data: Annotated[tuple, Depends(require_role(UserRole.ADMIN))],
+    debug: bool = Query(False),
+):
+    company, _uc = company_data
+    result = ade_integration_service.test_connection(db, company.id, debug=debug)
+    return AdETestResponse(**result)
+
+
+@router.post("/agenzia-entrate/sync/invoices", response_model=AdESyncResultResponse)
+def ade_sync_invoices(
+    data: AdESyncInvoicesRequest,
+    db: DB,
+    company_data: Annotated[tuple, Depends(require_role(UserRole.EDITOR))],
+    current_user: CurrentUser,
+):
+    company, _uc = company_data
+    result = ade_integration_service.sync_invoices(
+        db,
+        company,
+        user_id=current_user.id,
+        date_from=data.date_from,
+        date_to=data.date_to,
+        direction=data.direction,
+        debug=data.debug,
+    )
+    return AdESyncResultResponse(**result)
+
+
+@router.post("/agenzia-entrate/sync/corrispettivi", response_model=AdESyncResultResponse)
+def ade_sync_corrispettivi(
+    data: AdESyncCorrispettiviRequest,
+    db: DB,
+    company_data: Annotated[tuple, Depends(require_role(UserRole.EDITOR))],
+):
+    company, _uc = company_data
+    result = ade_integration_service.sync_corrispettivi(
+        db,
+        company,
+        date_from=data.date_from,
+        date_to=data.date_to,
+        debug=data.debug,
+    )
+    return AdESyncResultResponse(**result)
+
+
+# ===== Corrispettivi =====
+
+@router.get("/corrispettivi", response_model=ReceiptImportListResponse)
+def list_corrispettivi(
+    db: DB,
+    company_data: CurrentCompany,
+    date_from: date | None = Query(None),
+    date_to: date | None = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=200),
+):
+    company, _uc = company_data
+    items, total = receipt_import_service.list_receipts(
+        db, company.id, date_from=date_from, date_to=date_to, page=page, page_size=page_size
+    )
+    out: list[ReceiptImportResponse] = []
+    for it in items:
+        r = ReceiptImportResponse.model_validate(it)
+        r.raw_available = bool(getattr(it, "raw_attachment_path", None))
+        out.append(r)
+    return ReceiptImportListResponse(items=out, total=total)
+
+
+@router.get("/corrispettivi/{receipt_id}", response_model=ReceiptImportResponse)
+def get_corrispettivo(receipt_id: uuid.UUID, db: DB, company_data: CurrentCompany):
+    company, _uc = company_data
+    item = receipt_import_service.get_receipt(db, receipt_id, company.id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Corrispettivo non trovato")
+    r = ReceiptImportResponse.model_validate(item)
+    r.raw_available = bool(getattr(item, "raw_attachment_path", None))
+    return r
+
+
+@router.get("/corrispettivi/{receipt_id}/raw")
+def download_corrispettivo_raw(receipt_id: uuid.UUID, db: DB, company_data: CurrentCompany):
+    company, _uc = company_data
+    item = receipt_import_service.get_receipt(db, receipt_id, company.id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Corrispettivo non trovato")
+    if not item.raw_attachment_path:
+        raise HTTPException(status_code=404, detail="Allegato non disponibile")
+
+    from pathlib import Path
+    path = Path(item.raw_attachment_path)
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="File non trovato su storage locale")
+    return FileResponse(str(path), filename=path.name)
+
+
 # ===== Config by Type (MUST be after all specific routes to avoid path conflicts) =====
 
 @router.get("/{tipo}", response_model=IntegrationConfigResponse)
@@ -516,5 +639,12 @@ def toggle_integration(
     db: DB, company_data: Annotated[tuple, Depends(require_role(UserRole.ADMIN))],
 ):
     company, _uc = company_data
+    if data.is_enabled and tipo == IntegrationType.AGENZIA_ENTRATE:
+        cfg = integration_config_service.get_config(db, company.id, tipo)
+        if not getattr(cfg, "encrypted_credentials", None):
+            raise HTTPException(
+                status_code=400,
+                detail="Prima configura e salva le credenziali in Integrazioni > Agenzia Entrate.",
+            )
     cfg = integration_config_service.toggle(db, company.id, tipo, data.is_enabled)
     return IntegrationConfigResponse.model_validate(cfg)

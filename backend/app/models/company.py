@@ -60,5 +60,7 @@ class Company(Base):
     open_banking_connections: Mapped[list["OpenBankingConnection"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
     invoice_imports: Mapped[list["InvoiceImport"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
     invoice_import_batches: Mapped[list["InvoiceImportBatch"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
+    receipt_imports: Mapped[list["ReceiptImport"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
+    ade_sync_logs: Mapped[list["AdeSyncLog"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
     integration_configs: Mapped[list["IntegrationConfig"]] = relationship(back_populates="company", lazy="select")  # noqa: F821
     webhook_endpoints: Mapped[list["WebhookEndpoint"]] = relationship(back_populates="company", lazy="select")  # noqa: F821

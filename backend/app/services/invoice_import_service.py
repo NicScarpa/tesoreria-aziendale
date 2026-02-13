@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 
+from sqlalchemy import extract, func
 from sqlalchemy.orm import Session
 
 from app.models.enums import (
@@ -60,6 +61,105 @@ def _save_file(company_id: uuid.UUID, filename: str, content: bytes) -> str:
     file_path = dir_path / unique_name
     file_path.write_bytes(content)
     return str(file_path)
+
+
+def import_single_with_source(
+    db: Session, company_id: uuid.UUID, user_id: uuid.UUID,
+    file_bytes: bytes, filename: str,
+    fonte: InvoiceSource,
+    batch_id: uuid.UUID | None = None,
+    company_piva: str = "",
+) -> tuple[InvoiceImport, bool]:
+    """
+    Import a single FatturaPA XML/P7M file with a specific source (e.g. AdE/Cassetto).
+
+    This mirrors `upload_single` but lets callers set `fonte`.
+    """
+    parsed_list = parse_fatturapa(file_bytes, filename)
+
+    if not parsed_list:
+        inv = InvoiceImport(
+            company_id=company_id,
+            batch_id=batch_id,
+            fonte=fonte,
+            tipo_documento=InvoiceDocumentType.FATTURA_ACQUISTO,
+            stato=InvoiceStatus.ERRORE,
+            xml_file_nome=filename,
+            errore_dettaglio="Nessuna fattura trovata nel file XML",
+        )
+        db.add(inv)
+        db.flush()
+        return inv, True
+
+    # Process first body (most common case)
+    parsed = parsed_list[0]
+    tipo_doc = _determine_invoice_type(parsed, company_piva)
+
+    # Dedup check
+    existing = None
+    if parsed.identificativo_sdi:
+        existing = db.query(InvoiceImport).filter(
+            InvoiceImport.identificativo_sdi == parsed.identificativo_sdi,
+        ).first()
+
+    if not existing and parsed.numero_fattura and parsed.cedente_piva:
+        existing = db.query(InvoiceImport).filter(
+            InvoiceImport.numero_fattura == parsed.numero_fattura,
+            InvoiceImport.cedente_piva == parsed.cedente_piva,
+            InvoiceImport.company_id == company_id,
+        ).first()
+
+    if existing:
+        return existing, False
+
+    # Save XML (only if new)
+    xml_path = _save_file(company_id, filename, file_bytes)
+
+    # Save PDF if present
+    pdf_path = None
+    if parsed.pdf_allegato_base64:
+        import base64
+        try:
+            pdf_bytes = base64.b64decode(parsed.pdf_allegato_base64)
+            pdf_name = parsed.pdf_allegato_nome or f"{filename}.pdf"
+            pdf_path = _save_file(company_id, pdf_name, pdf_bytes)
+        except Exception as e:
+            logger.warning(f"Failed to save PDF attachment: {e}")
+
+    inv = InvoiceImport(
+        company_id=company_id,
+        batch_id=batch_id,
+        fonte=fonte,
+        tipo_documento=tipo_doc,
+        stato=InvoiceStatus.IMPORTATA,
+        numero_fattura=parsed.numero_fattura,
+        data_fattura=parsed.data_fattura,
+        cedente_denominazione=parsed.cedente_denominazione,
+        cedente_piva=parsed.cedente_piva,
+        cedente_cf=parsed.cedente_cf,
+        cessionario_denominazione=parsed.cessionario_denominazione,
+        cessionario_piva=parsed.cessionario_piva,
+        importo_totale=parsed.importo_totale,
+        imponibile_totale=parsed.imponibile_totale,
+        iva_totale=parsed.iva_totale,
+        valuta=parsed.valuta,
+        condizioni_pagamento=parsed.condizioni_pagamento,
+        modalita_pagamento=parsed.modalita_pagamento,
+        data_scadenza_pagamento=parsed.data_scadenza_pagamento,
+        iban_pagamento=parsed.iban_pagamento,
+        xml_file_path=xml_path,
+        xml_file_nome=filename,
+        pdf_allegato_path=pdf_path,
+        identificativo_sdi=parsed.identificativo_sdi or None,
+        metadata_extra={
+            "tipo_documento_codice": parsed.tipo_documento_codice,
+            "linee_dettaglio": parsed.linee_dettaglio,
+            "riepilogo_iva": parsed.riepilogo_iva,
+        },
+    )
+    db.add(inv)
+    db.flush()
+    return inv, True
 
 
 def upload_single(
@@ -206,6 +306,17 @@ def upload_batch(
     return batch
 
 
+EMESSE_TYPES = [
+    InvoiceDocumentType.FATTURA_VENDITA,
+    InvoiceDocumentType.NOTA_CREDITO_VENDITA,
+]
+RICEVUTE_TYPES = [
+    InvoiceDocumentType.FATTURA_ACQUISTO,
+    InvoiceDocumentType.NOTA_CREDITO_ACQUISTO,
+    InvoiceDocumentType.AUTOFATTURA,
+]
+
+
 def list_invoices(
     db: Session, company_id: uuid.UUID,
     tipo_documento: str | None = None,
@@ -216,10 +327,16 @@ def list_invoices(
     search: str | None = None,
     importo_min: float | None = None,
     importo_max: float | None = None,
+    direction: str | None = None,
     page: int = 1,
     page_size: int = 20,
 ) -> tuple[list[InvoiceImport], int]:
     q = db.query(InvoiceImport).filter(InvoiceImport.company_id == company_id)
+
+    if direction == "emesse":
+        q = q.filter(InvoiceImport.tipo_documento.in_(EMESSE_TYPES))
+    elif direction == "ricevute":
+        q = q.filter(InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES))
 
     if tipo_documento:
         q = q.filter(InvoiceImport.tipo_documento == tipo_documento)
@@ -383,3 +500,164 @@ def get_batch(db: Session, batch_id: uuid.UUID, company_id: uuid.UUID) -> Invoic
         InvoiceImportBatch.id == batch_id,
         InvoiceImportBatch.company_id == company_id,
     ).first()
+
+
+def get_invoice_stats(
+    db: Session, company_id: uuid.UUID,
+    anno: int | None = None,
+    mese: int | None = None,
+) -> dict:
+    """Return aggregated invoice statistics for the company."""
+    base = db.query(InvoiceImport).filter(InvoiceImport.company_id == company_id)
+
+    if anno:
+        base = base.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        base = base.filter(extract("month", InvoiceImport.data_fattura) == mese)
+
+    # --- Emesse ---
+    emesse_q = base.filter(InvoiceImport.tipo_documento.in_(EMESSE_TYPES))
+    emesse_count = emesse_q.count()
+    emesse_totale = db.query(func.coalesce(func.sum(InvoiceImport.importo_totale), 0)).filter(
+        InvoiceImport.company_id == company_id,
+        InvoiceImport.tipo_documento.in_(EMESSE_TYPES),
+    )
+    if anno:
+        emesse_totale = emesse_totale.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        emesse_totale = emesse_totale.filter(extract("month", InvoiceImport.data_fattura) == mese)
+    emesse_totale = float(emesse_totale.scalar() or 0)
+
+    # --- Ricevute ---
+    ricevute_q = base.filter(InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES))
+    ricevute_count = ricevute_q.count()
+    ricevute_totale = db.query(func.coalesce(func.sum(InvoiceImport.importo_totale), 0)).filter(
+        InvoiceImport.company_id == company_id,
+        InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES),
+    )
+    if anno:
+        ricevute_totale = ricevute_totale.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        ricevute_totale = ricevute_totale.filter(extract("month", InvoiceImport.data_fattura) == mese)
+    ricevute_totale = float(ricevute_totale.scalar() or 0)
+
+    # --- Da elaborare ---
+    da_elaborare = base.filter(InvoiceImport.stato == InvoiceStatus.IMPORTATA).count()
+
+    # --- Per mese (monthly breakdown) ---
+    per_mese_raw = (
+        db.query(
+            extract("year", InvoiceImport.data_fattura).label("anno"),
+            extract("month", InvoiceImport.data_fattura).label("mese"),
+            InvoiceImport.tipo_documento,
+            func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+        )
+        .filter(InvoiceImport.company_id == company_id)
+    )
+    if anno:
+        per_mese_raw = per_mese_raw.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        per_mese_raw = per_mese_raw.filter(extract("month", InvoiceImport.data_fattura) == mese)
+
+    per_mese_raw = (
+        per_mese_raw
+        .group_by("anno", "mese", InvoiceImport.tipo_documento)
+        .order_by("anno", "mese")
+        .all()
+    )
+
+    mesi_map: dict[str, dict] = {}
+    for row in per_mese_raw:
+        key = f"{int(row.anno)}-{int(row.mese):02d}"
+        if key not in mesi_map:
+            mesi_map[key] = {"mese": key, "emesse": 0.0, "ricevute": 0.0}
+        tipo = InvoiceDocumentType(row.tipo_documento) if isinstance(row.tipo_documento, str) else row.tipo_documento
+        if tipo in EMESSE_TYPES:
+            mesi_map[key]["emesse"] += float(row.totale or 0)
+        elif tipo in RICEVUTE_TYPES:
+            mesi_map[key]["ricevute"] += float(row.totale or 0)
+
+    per_mese = list(mesi_map.values())
+
+    # --- Top clienti (from emesse, group by cessionario) ---
+    top_clienti_raw = (
+        db.query(
+            InvoiceImport.cessionario_denominazione.label("nome"),
+            func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+            func.count(InvoiceImport.id).label("documenti"),
+        )
+        .filter(
+            InvoiceImport.company_id == company_id,
+            InvoiceImport.tipo_documento.in_(EMESSE_TYPES),
+            InvoiceImport.cessionario_denominazione.isnot(None),
+        )
+    )
+    if anno:
+        top_clienti_raw = top_clienti_raw.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        top_clienti_raw = top_clienti_raw.filter(extract("month", InvoiceImport.data_fattura) == mese)
+
+    top_clienti_raw = (
+        top_clienti_raw
+        .group_by(InvoiceImport.cessionario_denominazione)
+        .order_by(func.sum(InvoiceImport.importo_totale).desc())
+        .limit(10)
+        .all()
+    )
+
+    top_clienti = []
+    for row in top_clienti_raw:
+        tot = float(row.totale or 0)
+        top_clienti.append({
+            "nome": row.nome or "N/D",
+            "totale": tot,
+            "documenti": row.documenti,
+            "percentuale": round((tot / emesse_totale * 100) if emesse_totale > 0 else 0, 2),
+        })
+
+    # --- Top fornitori (from ricevute, group by cedente) ---
+    top_fornitori_raw = (
+        db.query(
+            InvoiceImport.cedente_denominazione.label("nome"),
+            func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+            func.count(InvoiceImport.id).label("documenti"),
+        )
+        .filter(
+            InvoiceImport.company_id == company_id,
+            InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES),
+            InvoiceImport.cedente_denominazione.isnot(None),
+        )
+    )
+    if anno:
+        top_fornitori_raw = top_fornitori_raw.filter(extract("year", InvoiceImport.data_fattura) == anno)
+    if mese:
+        top_fornitori_raw = top_fornitori_raw.filter(extract("month", InvoiceImport.data_fattura) == mese)
+
+    top_fornitori_raw = (
+        top_fornitori_raw
+        .group_by(InvoiceImport.cedente_denominazione)
+        .order_by(func.sum(InvoiceImport.importo_totale).desc())
+        .limit(10)
+        .all()
+    )
+
+    top_fornitori = []
+    for row in top_fornitori_raw:
+        tot = float(row.totale or 0)
+        top_fornitori.append({
+            "nome": row.nome or "N/D",
+            "totale": tot,
+            "documenti": row.documenti,
+            "percentuale": round((tot / ricevute_totale * 100) if ricevute_totale > 0 else 0, 2),
+        })
+
+    return {
+        "emesse_count": emesse_count,
+        "emesse_totale": emesse_totale,
+        "ricevute_count": ricevute_count,
+        "ricevute_totale": ricevute_totale,
+        "da_elaborare": da_elaborare,
+        "per_mese": per_mese,
+        "top_clienti": top_clienti,
+        "top_fornitori": top_fornitori,
+    }

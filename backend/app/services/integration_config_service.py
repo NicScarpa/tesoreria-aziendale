@@ -29,6 +29,10 @@ INTEGRATION_META = {
         "label": "CBI / SEPA",
         "description": "Import ed export file CBI e SEPA (camt.053, pain.001/002, rendicontazione).",
     },
+    IntegrationType.AGENZIA_ENTRATE: {
+        "label": "Agenzia Entrate",
+        "description": "Import corrispettivi e fatture dal portale Fatture e Corrispettivi (Entratel/Fisconline).",
+    },
 }
 
 

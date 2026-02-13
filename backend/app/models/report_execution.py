@@ -79,3 +79,8 @@ class ReportExecution(Base):
         Index("ix_report_executions_stato", "stato"),
         Index("ix_report_executions_scadenza", "data_scadenza_file"),
     )
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.stato is None:
+            self.stato = ReportExecutionStatus.IN_CODA

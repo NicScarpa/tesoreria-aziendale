@@ -1,6 +1,7 @@
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
+from typing import Literal
 from pydantic import BaseModel, Field
 from app.models.enums import (
     IntegrationType, IntegrationConnectionStatus,
@@ -219,3 +220,90 @@ class IntegrationAlertsCount(BaseModel):
     invoices_pending: int = 0
     sync_errors: int = 0
     total: int = 0
+
+
+# --- Agenzia Entrate (Entratel/Fisconline) ---
+
+class AdECredentials(BaseModel):
+    cf: str = Field(min_length=11, max_length=16)
+    password: str = Field(min_length=1)
+    pin: str = Field(min_length=1)
+
+
+class AdETestResponse(BaseModel):
+    success: bool
+    message: str
+
+
+class AdESyncInvoicesRequest(BaseModel):
+    date_from: date
+    date_to: date
+    direction: Literal["issued", "received"]
+    debug: bool = False
+
+
+class AdESyncCorrispettiviRequest(BaseModel):
+    date_from: date
+    date_to: date
+    debug: bool = False
+
+
+class AdESyncResultResponse(BaseModel):
+    success: bool
+    scope: str
+    imported_new: int = 0
+    updated: int = 0
+    failed: int = 0
+    pending: bool = False
+    external_request_id: str | None = None
+    message: str | None = None
+
+
+# --- Invoice Stats ---
+
+class MonthlyBreakdown(BaseModel):
+    mese: str
+    emesse: float
+    ricevute: float
+
+class TopCounterpart(BaseModel):
+    nome: str
+    totale: float
+    documenti: int
+    percentuale: float
+
+class InvoiceStatsResponse(BaseModel):
+    emesse_count: int
+    emesse_totale: float
+    ricevute_count: int
+    ricevute_totale: float
+    da_elaborare: int
+    per_mese: list[MonthlyBreakdown]
+    top_clienti: list[TopCounterpart]
+    top_fornitori: list[TopCounterpart]
+
+
+class ReceiptImportResponse(BaseModel):
+    model_config = {"from_attributes": True}
+
+    id: uuid.UUID
+    company_id: uuid.UUID
+    business_date: date
+    external_id: str | None = None
+    device_id: str | None = None
+    time_rilevazione: datetime | None = None
+    gross_total: Decimal | None = None
+    net_total: Decimal | None = None
+    vat_total: Decimal | None = None
+    currency: str
+    source: str
+    status: str
+    raw_available: bool = False
+    errore_dettaglio: str | None = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class ReceiptImportListResponse(BaseModel):
+    items: list[ReceiptImportResponse]
+    total: int
