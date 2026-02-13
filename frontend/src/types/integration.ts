@@ -338,11 +338,16 @@ export interface InvoiceMonthlyData {
   mese: string;
   emesse: number;
   ricevute: number;
+  emesse_imponibile: number;
+  ricevute_imponibile: number;
+  emesse_iva: number;
+  ricevute_iva: number;
 }
 
 export interface InvoiceCounterpartData {
   nome: string;
   totale: number;
+  imponibile: number;
   documenti: number;
   percentuale: number;
 }
@@ -352,6 +357,10 @@ export interface InvoiceStats {
   emesse_totale: number;
   ricevute_count: number;
   ricevute_totale: number;
+  emesse_imponibile: number;
+  ricevute_imponibile: number;
+  emesse_iva: number;
+  ricevute_iva: number;
   da_elaborare: number;
   per_mese: InvoiceMonthlyData[];
   top_clienti: InvoiceCounterpartData[];

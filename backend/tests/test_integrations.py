@@ -333,3 +333,24 @@ class TestEncryption:
 
         with pytest.raises(ValueError, match="FERNET_KEY not configured"):
             encrypt_value("test")
+
+    def test_wrong_key_raises_valueerror(self, monkeypatch):
+        """decrypt_value raises ValueError when ciphertext was encrypted with a different key."""
+        from app.core.config import Settings
+        from app.core.encryption import encrypt_value, decrypt_value
+
+        # Encrypt with key1
+        key1 = Fernet.generate_key().decode()
+        monkeypatch.setenv("FERNET_KEY", key1)
+        settings1 = Settings()
+        monkeypatch.setattr("app.core.encryption.settings", settings1)
+        encrypted = encrypt_value("credenziali-segrete")
+
+        # Decrypt with key2
+        key2 = Fernet.generate_key().decode()
+        monkeypatch.setenv("FERNET_KEY", key2)
+        settings2 = Settings()
+        monkeypatch.setattr("app.core.encryption.settings", settings2)
+
+        with pytest.raises(ValueError, match="Impossibile decifrare"):
+            decrypt_value(encrypted)

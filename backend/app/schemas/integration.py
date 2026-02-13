@@ -265,10 +265,15 @@ class MonthlyBreakdown(BaseModel):
     mese: str
     emesse: float
     ricevute: float
+    emesse_imponibile: float = 0.0
+    ricevute_imponibile: float = 0.0
+    emesse_iva: float = 0.0
+    ricevute_iva: float = 0.0
 
 class TopCounterpart(BaseModel):
     nome: str
     totale: float
+    imponibile: float = 0.0
     documenti: int
     percentuale: float
 
@@ -277,6 +282,10 @@ class InvoiceStatsResponse(BaseModel):
     emesse_totale: float
     ricevute_count: int
     ricevute_totale: float
+    emesse_imponibile: float = 0.0
+    ricevute_imponibile: float = 0.0
+    emesse_iva: float = 0.0
+    ricevute_iva: float = 0.0
     da_elaborare: int
     per_mese: list[MonthlyBreakdown]
     top_clienti: list[TopCounterpart]

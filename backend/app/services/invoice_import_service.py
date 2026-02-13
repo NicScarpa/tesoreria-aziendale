@@ -518,28 +518,44 @@ def get_invoice_stats(
     # --- Emesse ---
     emesse_q = base.filter(InvoiceImport.tipo_documento.in_(EMESSE_TYPES))
     emesse_count = emesse_q.count()
-    emesse_totale = db.query(func.coalesce(func.sum(InvoiceImport.importo_totale), 0)).filter(
+
+    emesse_agg = db.query(
+        func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+        func.coalesce(func.sum(InvoiceImport.imponibile_totale), 0).label("imponibile"),
+        func.coalesce(func.sum(InvoiceImport.iva_totale), 0).label("iva"),
+    ).filter(
         InvoiceImport.company_id == company_id,
         InvoiceImport.tipo_documento.in_(EMESSE_TYPES),
     )
     if anno:
-        emesse_totale = emesse_totale.filter(extract("year", InvoiceImport.data_fattura) == anno)
+        emesse_agg = emesse_agg.filter(extract("year", InvoiceImport.data_fattura) == anno)
     if mese:
-        emesse_totale = emesse_totale.filter(extract("month", InvoiceImport.data_fattura) == mese)
-    emesse_totale = float(emesse_totale.scalar() or 0)
+        emesse_agg = emesse_agg.filter(extract("month", InvoiceImport.data_fattura) == mese)
+    emesse_row = emesse_agg.one()
+    emesse_totale = float(emesse_row.totale or 0)
+    emesse_imponibile = float(emesse_row.imponibile or 0)
+    emesse_iva = float(emesse_row.iva or 0)
 
     # --- Ricevute ---
     ricevute_q = base.filter(InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES))
     ricevute_count = ricevute_q.count()
-    ricevute_totale = db.query(func.coalesce(func.sum(InvoiceImport.importo_totale), 0)).filter(
+
+    ricevute_agg = db.query(
+        func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+        func.coalesce(func.sum(InvoiceImport.imponibile_totale), 0).label("imponibile"),
+        func.coalesce(func.sum(InvoiceImport.iva_totale), 0).label("iva"),
+    ).filter(
         InvoiceImport.company_id == company_id,
         InvoiceImport.tipo_documento.in_(RICEVUTE_TYPES),
     )
     if anno:
-        ricevute_totale = ricevute_totale.filter(extract("year", InvoiceImport.data_fattura) == anno)
+        ricevute_agg = ricevute_agg.filter(extract("year", InvoiceImport.data_fattura) == anno)
     if mese:
-        ricevute_totale = ricevute_totale.filter(extract("month", InvoiceImport.data_fattura) == mese)
-    ricevute_totale = float(ricevute_totale.scalar() or 0)
+        ricevute_agg = ricevute_agg.filter(extract("month", InvoiceImport.data_fattura) == mese)
+    ricevute_row = ricevute_agg.one()
+    ricevute_totale = float(ricevute_row.totale or 0)
+    ricevute_imponibile = float(ricevute_row.imponibile or 0)
+    ricevute_iva = float(ricevute_row.iva or 0)
 
     # --- Da elaborare ---
     da_elaborare = base.filter(InvoiceImport.stato == InvoiceStatus.IMPORTATA).count()
@@ -551,6 +567,8 @@ def get_invoice_stats(
             extract("month", InvoiceImport.data_fattura).label("mese"),
             InvoiceImport.tipo_documento,
             func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+            func.coalesce(func.sum(InvoiceImport.imponibile_totale), 0).label("imponibile"),
+            func.coalesce(func.sum(InvoiceImport.iva_totale), 0).label("iva"),
         )
         .filter(InvoiceImport.company_id == company_id)
     )
@@ -570,12 +588,20 @@ def get_invoice_stats(
     for row in per_mese_raw:
         key = f"{int(row.anno)}-{int(row.mese):02d}"
         if key not in mesi_map:
-            mesi_map[key] = {"mese": key, "emesse": 0.0, "ricevute": 0.0}
+            mesi_map[key] = {
+                "mese": key, "emesse": 0.0, "ricevute": 0.0,
+                "emesse_imponibile": 0.0, "ricevute_imponibile": 0.0,
+                "emesse_iva": 0.0, "ricevute_iva": 0.0,
+            }
         tipo = InvoiceDocumentType(row.tipo_documento) if isinstance(row.tipo_documento, str) else row.tipo_documento
         if tipo in EMESSE_TYPES:
             mesi_map[key]["emesse"] += float(row.totale or 0)
+            mesi_map[key]["emesse_imponibile"] += float(row.imponibile or 0)
+            mesi_map[key]["emesse_iva"] += float(row.iva or 0)
         elif tipo in RICEVUTE_TYPES:
             mesi_map[key]["ricevute"] += float(row.totale or 0)
+            mesi_map[key]["ricevute_imponibile"] += float(row.imponibile or 0)
+            mesi_map[key]["ricevute_iva"] += float(row.iva or 0)
 
     per_mese = list(mesi_map.values())
 
@@ -584,6 +610,7 @@ def get_invoice_stats(
         db.query(
             InvoiceImport.cessionario_denominazione.label("nome"),
             func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+            func.coalesce(func.sum(InvoiceImport.imponibile_totale), 0).label("imponibile"),
             func.count(InvoiceImport.id).label("documenti"),
         )
         .filter(
@@ -600,19 +627,20 @@ def get_invoice_stats(
     top_clienti_raw = (
         top_clienti_raw
         .group_by(InvoiceImport.cessionario_denominazione)
-        .order_by(func.sum(InvoiceImport.importo_totale).desc())
+        .order_by(func.sum(InvoiceImport.imponibile_totale).desc())
         .limit(10)
         .all()
     )
 
     top_clienti = []
     for row in top_clienti_raw:
-        tot = float(row.totale or 0)
+        imp = float(row.imponibile or 0)
         top_clienti.append({
             "nome": row.nome or "N/D",
-            "totale": tot,
+            "totale": float(row.totale or 0),
+            "imponibile": imp,
             "documenti": row.documenti,
-            "percentuale": round((tot / emesse_totale * 100) if emesse_totale > 0 else 0, 2),
+            "percentuale": round((imp / emesse_imponibile * 100) if emesse_imponibile > 0 else 0, 2),
         })
 
     # --- Top fornitori (from ricevute, group by cedente) ---
@@ -620,6 +648,7 @@ def get_invoice_stats(
         db.query(
             InvoiceImport.cedente_denominazione.label("nome"),
             func.coalesce(func.sum(InvoiceImport.importo_totale), 0).label("totale"),
+            func.coalesce(func.sum(InvoiceImport.imponibile_totale), 0).label("imponibile"),
             func.count(InvoiceImport.id).label("documenti"),
         )
         .filter(
@@ -636,19 +665,20 @@ def get_invoice_stats(
     top_fornitori_raw = (
         top_fornitori_raw
         .group_by(InvoiceImport.cedente_denominazione)
-        .order_by(func.sum(InvoiceImport.importo_totale).desc())
+        .order_by(func.sum(InvoiceImport.imponibile_totale).desc())
         .limit(10)
         .all()
     )
 
     top_fornitori = []
     for row in top_fornitori_raw:
-        tot = float(row.totale or 0)
+        imp = float(row.imponibile or 0)
         top_fornitori.append({
             "nome": row.nome or "N/D",
-            "totale": tot,
+            "totale": float(row.totale or 0),
+            "imponibile": imp,
             "documenti": row.documenti,
-            "percentuale": round((tot / ricevute_totale * 100) if ricevute_totale > 0 else 0, 2),
+            "percentuale": round((imp / ricevute_imponibile * 100) if ricevute_imponibile > 0 else 0, 2),
         })
 
     return {
@@ -656,6 +686,10 @@ def get_invoice_stats(
         "emesse_totale": emesse_totale,
         "ricevute_count": ricevute_count,
         "ricevute_totale": ricevute_totale,
+        "emesse_imponibile": emesse_imponibile,
+        "ricevute_imponibile": ricevute_imponibile,
+        "emesse_iva": emesse_iva,
+        "ricevute_iva": ricevute_iva,
         "da_elaborare": da_elaborare,
         "per_mese": per_mese,
         "top_clienti": top_clienti,

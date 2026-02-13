@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
 import re
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 from urllib.parse import urljoin
+
+logger = logging.getLogger(__name__)
 
 
 class AdePortalError(RuntimeError):
@@ -49,17 +53,31 @@ class AdEPortalClient:
                 "Playwright non installato nel backend. Installa con: pip install playwright && python -m playwright install chromium"
             ) from e
 
+        logger.info("AdEPortalClient: avvio browser headless=%s timeout=%dms", self.headless, self.timeout_ms)
         self._pw = sync_playwright().start()
-        self._browser = self._pw.chromium.launch(headless=self.headless)
+        self._browser = self._pw.chromium.launch(
+            headless=self.headless,
+            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+        )
         self._context = self._browser.new_context(
             accept_downloads=True,
             locale="it-IT",
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36"
+            ),
         )
+        self._context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+        """)
         self._page = self._context.new_page()
         self._page.set_default_timeout(self.timeout_ms)
+        logger.info("AdEPortalClient: browser avviato con stealth mode")
         return self
 
     def __exit__(self, exc_type, exc, tb) -> None:
+        logger.info("AdEPortalClient: chiusura browser (exc_type=%s)", exc_type)
         try:
             if self._context:
                 self._context.close()
@@ -80,6 +98,15 @@ class AdEPortalClient:
         return self._page
 
     def _debug_save(self, name: str) -> None:
+        # Always log URL and title for diagnostics, even without debug_dir.
+        try:
+            url = self.page.url or "(unknown)"
+            title = self.page.title() or "(no title)"
+        except Exception:
+            url = "(error)"
+            title = "(error)"
+        logger.debug("_debug_save(%s): url=%s title=%s", name, url, title)
+
         if not self.debug_dir:
             return
         self.debug_dir.mkdir(parents=True, exist_ok=True)
@@ -90,6 +117,11 @@ class AdEPortalClient:
         try:
             html = self.page.content()
             (self.debug_dir / f"{name}.html").write_text(html, encoding="utf-8")
+        except Exception:
+            pass
+        try:
+            meta = f"URL: {url}\nTitle: {title}\nTimestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
+            (self.debug_dir / f"{name}.meta.txt").write_text(meta, encoding="utf-8")
         except Exception:
             pass
 
@@ -129,27 +161,50 @@ class AdEPortalClient:
         except Exception:
             pass
 
-        # Avoid double-clicking: we click once and then (briefly) check if a popup appeared.
-        before_pages = 0
+        logger.debug("_safe_click: clicking element")
+
+        # Try to detect popup deterministically via expect_page.
+        new_page = None
         try:
-            before_pages = len(getattr(self._context, "pages", []) or [])
+            with self._context.expect_page(timeout=5_000) as page_info:
+                locator.click()
+            new_page = page_info.value
         except Exception:
-            before_pages = 0
+            # No popup opened within 5s — normal same-page navigation.
+            try:
+                # Click may not have fired above if expect_page raised before; ensure click happened.
+                locator.click(timeout=3_000)
+            except Exception:
+                pass
 
-        locator.click()
+        if new_page:
+            logger.info("_safe_click: popup rilevato, switching pagina -> %s", new_page.url)
+            try:
+                new_page.wait_for_load_state("domcontentloaded", timeout=15_000)
+            except Exception:
+                pass
+            self._page = new_page
+            self._page.set_default_timeout(self.timeout_ms)
+            return
 
-        # If a popup/tab was opened, adopt it as the active page.
+        # Fallback: manual check after a longer wait (2s instead of 750ms).
         try:
-            self.page.wait_for_timeout(750)
+            self.page.wait_for_timeout(2_000)
         except Exception:
             pass
 
         try:
             pages = getattr(self._context, "pages", []) or []
-            if len(pages) > before_pages:
-                new_page = pages[-1]
-                self._page = new_page
-                self._page.set_default_timeout(self.timeout_ms)
+            if len(pages) > 1:
+                candidate = pages[-1]
+                if candidate != self._page:
+                    logger.info("_safe_click: nuova tab rilevata (fallback) -> %s", candidate.url)
+                    try:
+                        candidate.wait_for_load_state("domcontentloaded", timeout=15_000)
+                    except Exception:
+                        pass
+                    self._page = candidate
+                    self._page.set_default_timeout(self.timeout_ms)
         except Exception:
             pass
 
@@ -212,15 +267,93 @@ class AdEPortalClient:
         except Exception:
             url = ""
 
-        if "/portale/web/guest/home" in url:
-            return True
-        # Home exposes SPA links to other services (mass-web etc.).
+        # Check multiple known URL patterns for FEC home.
+        fec_url_patterns = [
+            "/portale/web/guest/home",
+            "/portale/home",
+            "/portale/web/home",
+            "/portale/web/guest/area-riservata",
+        ]
+        for pattern in fec_url_patterns:
+            if pattern in url:
+                logger.debug("_is_fec_home: URL match '%s' in %s", pattern, url)
+                return True
+
+        # Check page title.
         try:
-            if self.page.locator("a.link_spa[href*='/cons/mass-web']").count() > 0:
+            title = (self.page.title() or "").lower()
+            if "fatture e corrispettivi" in title:
+                logger.debug("_is_fec_home: title match '%s'", title)
                 return True
         except Exception:
             pass
+
+        # Home exposes SPA links to other services (mass-web etc.).
+        try:
+            if self.page.locator("a.link_spa[href*='/cons/mass-web']").count() > 0:
+                logger.debug("_is_fec_home: SPA link match (mass-web)")
+                return True
+        except Exception:
+            pass
+
+        # Check for "Consultazione" link via role (reliable indicator of FEC home).
+        try:
+            if self.page.get_by_role("link", name=re.compile(r"Consultazione", re.I)).count() > 0:
+                logger.debug("_is_fec_home: 'Consultazione' link found")
+                return True
+        except Exception:
+            pass
+
         return False
+
+    def _wait_for_fec_or_utenza(self, *, timeout_ms: int = 30_000) -> str | None:
+        """
+        Poll until we detect the utenza-di-lavoro step or the FEC home page.
+
+        Returns:
+            "utenza"   — if #tipo_ut_button is visible (utenza di lavoro selection)
+            "fec_home" — if we're on the FEC home (Consultazione link or URL match)
+            None       — if timeout expired without matching
+        """
+        deadline = time.monotonic() + (timeout_ms / 1_000)
+        logger.debug("_wait_for_fec_or_utenza: polling per %dms", timeout_ms)
+
+        while time.monotonic() < deadline:
+            # Check utenza di lavoro selector.
+            try:
+                if self.page.locator("#tipo_ut_button").count() > 0:
+                    logger.debug("_wait_for_fec_or_utenza: #tipo_ut_button trovato")
+                    return "utenza"
+            except Exception:
+                pass
+
+            # Check Consultazione link/button via role.
+            try:
+                if self.page.get_by_role("link", name=re.compile(r"Consultazione", re.I)).count() > 0:
+                    logger.debug("_wait_for_fec_or_utenza: link 'Consultazione' trovato")
+                    return "fec_home"
+            except Exception:
+                pass
+            try:
+                if self.page.get_by_role("button", name=re.compile(r"Consultazione", re.I)).count() > 0:
+                    logger.debug("_wait_for_fec_or_utenza: button 'Consultazione' trovato")
+                    return "fec_home"
+            except Exception:
+                pass
+
+            # Check FEC home via URL/title/content.
+            if self._is_fec_home():
+                logger.debug("_wait_for_fec_or_utenza: _is_fec_home() = True")
+                return "fec_home"
+
+            # Poll interval.
+            try:
+                self.page.wait_for_timeout(500)
+            except Exception:
+                time.sleep(0.5)
+
+        logger.debug("_wait_for_fec_or_utenza: timeout raggiunto senza match")
+        return None
 
     def _ensure_utenza_di_lavoro(
         self,
@@ -248,6 +381,7 @@ class AdEPortalClient:
             mode = "me_stesso"
         if mode not in {"auto", "me_stesso", "incaricato"}:
             mode = "auto"
+        logger.info("utenza_di_lavoro: avvio con mode=%s, url=%s", mode, self.page.url)
 
         try:
             from playwright.sync_api import TimeoutError as PwTimeout  # type: ignore
@@ -565,12 +699,14 @@ class AdEPortalClient:
 
         This is best-effort because the portal can change and may show CAPTCHAs.
         """
+        logger.info("login: navigazione a %s", cfg.login_url)
         try:
             self.page.goto(cfg.login_url, wait_until="networkidle")
         except Exception as e:
             self._debug_save("login_goto_failed")
             raise AdePortalError(f"Impossibile aprire la pagina di login: {e}") from e
 
+        logger.debug("login: pagina caricata, url=%s", self.page.url)
         self._maybe_accept_cookies()
 
         # If there's a tab/button/link to choose Entratel/Fisconline, try to click it.
@@ -581,6 +717,7 @@ class AdEPortalClient:
         ok_cf = self._fill_by_label_or_placeholder(["Codice fiscale", "Codice Fiscale", "CF", "Username", "User"], cf)
         ok_pwd = self._fill_by_label_or_placeholder(["Password", "Pwd"], password)
         ok_pin = self._fill_by_label_or_placeholder(["PIN", "Pin", "Codice PIN", "Codice personale"], pin)
+        logger.debug("login: campi compilati cf=%s pwd=%s pin=%s", ok_cf, ok_pwd, ok_pin)
 
         if not ok_cf:
             self._debug_save("login_cf_not_found")
@@ -605,6 +742,7 @@ class AdEPortalClient:
             raise AdePortalError("Campo PIN non trovato (portale cambiato).")
 
         # Submit
+        logger.info("login: invio credenziali")
         clicked = self._click_first_by_role("button", ["Entra", "Accedi", "Login", "Continua"], strict=False)
         if not clicked:
             # Fallback: submit by pressing Enter in last field.
@@ -623,6 +761,8 @@ class AdEPortalClient:
         except Exception:
             # Some apps never go fully idle; ignore.
             pass
+
+        logger.info("login: post-submit url=%s", self.page.url)
 
         # Detect common blocks/errors
         content = ""
@@ -664,6 +804,7 @@ class AdEPortalClient:
 
         This navigation is best-effort and intentionally defensive.
         """
+        logger.info("goto_fec: inizio navigazione verso Fatture e Corrispettivi")
         self._maybe_accept_cookies()
 
         # If we're already on ivaservizi, no-op (still keep trying to reach the app).
@@ -671,6 +812,7 @@ class AdEPortalClient:
             current_url = self.page.url or ""
         except Exception:
             current_url = ""
+        logger.debug("goto_fec: URL corrente=%s", current_url)
 
         # Step 1: from Area Riservata, open "Fatturazione elettronica" service
         # (href usually contains "accessoFatturazione"). The tile may be in a carousel and not
@@ -691,6 +833,7 @@ class AdEPortalClient:
                 target = urljoin(current_url or self.page.url or "", "/PortaleWeb/servizi/accessoFatturazione")
 
             # Don't wait for networkidle: portals can keep connections open.
+            logger.info("goto_fec: step1 navigazione a %s", target)
             self.page.goto(target, wait_until="domcontentloaded")
             self._maybe_accept_cookies()
             # SPA: wait for either the service cards OR the "utenza di lavoro" selection step.
@@ -746,6 +889,7 @@ class AdEPortalClient:
         # Step 2: enter "Fatture e corrispettivi" card and click its "Accedi" button.
         # On the "Fatturazione elettronica" page there are multiple "Accedi" buttons;
         # we MUST scope the click to the right card.
+        logger.info("goto_fec: step2 cerco card 'Fatture e corrispettivi', url=%s", self.page.url)
         try:
             title = self.page.get_by_test_id("card-title").filter(
                 has_text=re.compile(r"Fatture\s+e\s+corrispettivi", re.I)
@@ -768,13 +912,7 @@ class AdEPortalClient:
                     self._debug_save("goto_03_after_click_card_accedi")
 
                     # Wait until either the working-profile selection step OR the app menu appears.
-                    try:
-                        self.page.wait_for_selector(
-                            "#tipo_ut_button, a:has-text('Consultazione'), button:has-text('Consultazione')",
-                            timeout=30_000,
-                        )
-                    except Exception:
-                        pass
+                    self._wait_for_fec_or_utenza(timeout_ms=30_000)
 
                     # If we land on the working-profile selection step (or any intermediate step), handle it now.
                     try:
@@ -799,6 +937,7 @@ class AdEPortalClient:
 
         # Fallback: click the last visible "Accedi" button (usually the "Fatture e corrispettivi" one)
         # Only do this if we are on the Fatturazione elettronica page.
+        logger.info("goto_fec: fallback - cerco ultimo 'Accedi', url=%s", self.page.url)
         try:
             if "Fatturazione elettronica" in (self.page.content() or ""):
                 accedi = self.page.get_by_role("button", name=re.compile(r"Accedi", re.I))
@@ -815,13 +954,7 @@ class AdEPortalClient:
                     self._maybe_accept_cookies()
                     self._debug_save("goto_03b_after_fallback_click_accedi")
 
-                    try:
-                        self.page.wait_for_selector(
-                            "#tipo_ut_button, a:has-text('Consultazione'), button:has-text('Consultazione')",
-                            timeout=30_000,
-                        )
-                    except Exception:
-                        pass
+                    self._wait_for_fec_or_utenza(timeout_ms=30_000)
 
                     try:
                         self._ensure_utenza_di_lavoro(
@@ -844,6 +977,7 @@ class AdEPortalClient:
             pass
 
         # Final fallback: semantic click by text (less reliable).
+        logger.info("goto_fec: final fallback semantico, url=%s", self.page.url)
         ok = (
             self._click_first_by_role(
                 "link",
@@ -867,13 +1001,7 @@ class AdEPortalClient:
                 pass
             self._maybe_accept_cookies()
             self._debug_save("goto_03c_after_semantic_click")
-            try:
-                self.page.wait_for_selector(
-                    "#tipo_ut_button, a:has-text('Consultazione'), button:has-text('Consultazione')",
-                    timeout=30_000,
-                )
-            except Exception:
-                pass
+            self._wait_for_fec_or_utenza(timeout_ms=30_000)
             try:
                 self._ensure_utenza_di_lavoro(
                     working_mode=working_mode,
@@ -912,6 +1040,7 @@ class AdEPortalClient:
                 pass
 
         self._debug_save("goto_fatture_e_corrispettivi_failed")
+        logger.error("goto_fec: FALLITO - tutte le strategie esaurite, url=%s", self.page.url)
         raise AdePortalError(
             "Impossibile aprire il portale 'Fatture e corrispettivi' dall'Area riservata (clic 'Accedi' non riuscito)."
         )

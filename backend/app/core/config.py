@@ -1,7 +1,10 @@
+import logging
 from pathlib import Path
 
 from cryptography.fernet import Fernet
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -26,6 +29,13 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Auto-generate FERNET_KEY if not configured (dev convenience)
 if not settings.FERNET_KEY:
-    settings.FERNET_KEY = Fernet.generate_key().decode()
+    _generated_key = Fernet.generate_key().decode()
+    settings.FERNET_KEY = _generated_key
+    _env_path = Path(__file__).resolve().parents[3] / ".env"
+    try:
+        with open(_env_path, "a") as f:
+            f.write(f"\nFERNET_KEY={_generated_key}\n")
+        _logger.warning("FERNET_KEY auto-generata e salvata in %s", _env_path)
+    except OSError as e:
+        _logger.error("Impossibile salvare FERNET_KEY in %s: %s", _env_path, e)

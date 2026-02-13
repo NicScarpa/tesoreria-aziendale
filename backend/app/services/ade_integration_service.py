@@ -65,6 +65,12 @@ def _load_credentials(cfg: IntegrationConfig) -> dict:
     try:
         plaintext = decrypt_value(cfg.encrypted_credentials)
         creds = json.loads(plaintext)
+    except ValueError as e:
+        logger.error(f"Failed to decrypt AdE credentials (key mismatch): {e}")
+        raise HTTPException(
+            status_code=400,
+            detail="Le credenziali salvate non sono più leggibili. Ri-salva CF, password e PIN dalla pagina Integrazioni > Agenzia Entrate.",
+        )
     except Exception as e:
         logger.error(f"Failed to decrypt/parse AdE credentials: {e}")
         raise HTTPException(status_code=500, detail="Credenziali AdE non leggibili (cifratura/config)")

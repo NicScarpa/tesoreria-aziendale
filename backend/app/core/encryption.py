@@ -1,4 +1,4 @@
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 
 from app.core.config import settings
 
@@ -18,4 +18,9 @@ def encrypt_value(plaintext: str) -> str:
 def decrypt_value(ciphertext: str) -> str:
     """Decrypt a base64-encoded ciphertext and return plaintext."""
     f = _get_fernet()
-    return f.decrypt(ciphertext.encode()).decode()
+    try:
+        return f.decrypt(ciphertext.encode()).decode()
+    except InvalidToken:
+        raise ValueError(
+            "Impossibile decifrare: la chiave di cifratura (FERNET_KEY) non corrisponde a quella usata per salvare i dati."
+        )

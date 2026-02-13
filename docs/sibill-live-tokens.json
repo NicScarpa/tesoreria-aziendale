@@ -1,0 +1,237 @@
+{
+  "meta": {
+    "captured_at": "2026-02-11",
+    "source": "https://app.sibill.com (live authenticated)",
+    "viewport": "1440x900"
+  },
+  "typography": {
+    "fontFamilyBase": "\"Public Sans\", sans-serif",
+    "body": {
+      "fontSize": "13px",
+      "fontWeight": 500,
+      "lineHeight": "19.5px",
+      "color": "#1a1a1a",
+      "background": "#ffffff"
+    },
+    "scale": [
+      "12px",
+      "13px",
+      "14px",
+      "18px"
+    ],
+    "weights": [400, 500, 600, 700]
+  },
+  "shape": {
+    "radius": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "32px",
+      "xl": "40px",
+      "full": "50%"
+    },
+    "shadow": {
+      "sm": "0px 2px 4px 0px rgb(0 0 0 / 20%)",
+      "md": "0px 2px 8px 0px rgb(0 0 0 / 16%)",
+      "lg": "0px 2px 16px 0px rgb(0 0 0 / 16%)"
+    }
+  },
+  "colors": {
+    "textPrimary": "#1a1a1a",
+    "bgPrimary": "#ffffff",
+    "brandPrimary": "#6672ff",
+    "neutralBorder": "#817f7d",
+    "tokenVars": {
+      "--color-orange-200": "#fff2d9",
+      "--color-forest-500": "#8cbabc",
+      "--color-pink-300": "#ffe3e9",
+      "--color-pink-500": "#ffc0ce",
+      "--color-forest-700": "#338589",
+      "--color-grey-200": "#f2f2f2",
+      "--color-orange-600": "#ffcd66",
+      "--color-orange-800": "#e37c30",
+      "--color-lemon-300": "#f9f7c9",
+      "--color-teal-400": "#b2e5e7",
+      "--color-violet-600": "#6672ff",
+      "--color-berry-400": "#c8b9df",
+      "--color-pink-400": "#ffd5df",
+      "--color-grey-600": "#817f7d",
+      "--color-grey-100": "#f9f9f9",
+      "--shadow-md": "0px 2px 8px 0px rgb(0 0 0 / 16%)",
+      "--color-green-100": "#e5f7f0",
+      "--color-lemon-400": "#f5f1a5",
+      "--color-lobster-400": "#fdcbcb",
+      "--color-lobster-800": "#f75251",
+      "--color-berry-700": "#9173c0",
+      "--color-pink-800": "#f9567c",
+      "--color-teal-800": "#00a7b0",
+      "--color-lemon-200": "#fbf9db",
+      "--color-green-500": "#8cddba",
+      "--color-violet-400": "#c0c8ff",
+      "--color-grey-500": "#aba8a4",
+      "--color-lobster-600": "#fa9797",
+      "--color-lemon-600": "#ebe34b",
+      "--color-sea-200": "#ccdfee",
+      "--color-teal-600": "#66cad0",
+      "--shadow-sm": "0px 2px 4px 0px rgb(0 0 0 / 20%)",
+      "--color-sea-400": "#99bedd",
+      "--color-sea-100": "#e5eff6",
+      "--border-radius-md": "16px",
+      "--shadow-lg": "0px 2px 16px 0px rgb(0 0 0 / 16%)",
+      "--color-lobster-500": "#fbb1b1",
+      "--color-forest-200": "#d9e8e9",
+      "--color-berry-800": "#7550b0",
+      "--color-lobster-200": "#fee5e5",
+      "--color-forest-100": "#e5f0f0",
+      "--color-lobster-100": "#feeeee",
+      "--border-radius-xs": "4px",
+      "--color-violet-500": "#969eff",
+      "--color-pink-100": "#fff1f4",
+      "--color-orange-300": "#fec",
+      "--color-lemon-700": "#e0d500",
+      "--color-berry-600": "#ac96d0",
+      "--color-berry-200": "#e3dcef",
+      "--color-forest-600": "#66a3a6",
+      "--color-sea-600": "#669ecb",
+      "--color-green-600": "#66d1a3",
+      "--color-berry-100": "#e4e4e4",
+      "--color-violet-300": "#d9deff",
+      "--color-orange-700": "#ffab00",
+      "--color-teal-700": "#33b9c0",
+      "--color-orange-500": "#ffd98c",
+      "--color-berry-300": "#d6cae7",
+      "--color-berry-500": "#baa7d7",
+      "--color-grey-800": "#1a1a1a",
+      "--color-orange-400": "#ffe6b2",
+      "--color-pink-600": "#ffabbe",
+      "--color-violet-100": "#f5f6ff",
+      "--color-pink-200": "#ffeaef",
+      "--color-lobster-900": "#ea0b0b",
+      "--color-sea-300": "#b2cee5",
+      "--color-grey-300": "#e5e4e3",
+      "--color-green-800": "#00b365",
+      "--color-grey-700": "#535353",
+      "--color-green-400": "#b2e8d1",
+      "--border-radius-sm": "8px",
+      "--color-forest-800": "#00666b",
+      "--color-pink-700": "#ff7393",
+      "--border-radius-full": "50%",
+      "--color-violet-200": "#e5e9ff",
+      "--color-orange-100": "#fff7e5",
+      "--color-teal-300": "#ccedef",
+      "--color-sea-800": "#005da9",
+      "--color-green-200": "#d9f4e8",
+      "--color-grey-400": "#d7d4d1",
+      "--color-green-300": "#ccf0e0",
+      "--color-teal-200": "#d9f2f3",
+      "--color-sea-500": "#80aed4",
+      "--color-forest-300": "#cce0e1",
+      "--color-green-700": "#33c284",
+      "--border-radius-xl": "40px",
+      "--color-teal-500": "#8cd7db",
+      "--color-lobster-300": "#fddcdc",
+      "--color-forest-400": "#b2d1d3",
+      "--color-lemon-500": "#f1eb81",
+      "--color-lobster-700": "#f97574",
+      "--border-radius-lg": "32px",
+      "--color-sea-700": "#337dba",
+      "--color-teal-100": "#e5f6f7"
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "background": "#1a1a1a",
+        "color": "#ffffff",
+        "border": "none",
+        "borderRadius": "8px",
+        "font": "14px/600",
+        "padding": "0 16px"
+      },
+      "outlined": {
+        "background": "transparent",
+        "color": "#1a1a1a",
+        "border": "1px solid #1a1a1a",
+        "borderRadius": "8px",
+        "font": "14px/600"
+      },
+      "filterControl": {
+        "background": "#ffffff",
+        "color": "#1a1a1a",
+        "border": "1px solid #817f7d",
+        "borderRadius": "8px",
+        "font": "12px/500",
+        "height": "32px",
+        "padding": "6px 12px"
+      }
+    },
+    "modal": {
+      "overlay": {
+        "background": "rgba(0, 0, 0, 0.25)",
+        "zIndex": 1300
+      },
+      "dialogBase": {
+        "background": "#ffffff",
+        "borderRadius": "16px",
+        "boxShadow": "0 2px 16px rgba(0,0,0,0.16)",
+        "padding": "24px 0",
+        "gap": "24px"
+      },
+      "logout": {
+        "size": "600x196"
+      },
+      "teamInvite": {
+        "size": "458x659"
+      }
+    },
+    "chip": {
+      "height": "32px",
+      "padding": "0 12px",
+      "radius": "40px",
+      "font": "12px/500"
+    },
+    "table": {
+      "header": {
+        "background": "#f9f9f9",
+        "color": "#817f7d",
+        "font": "12px/600",
+        "padding": "10px 16px"
+      },
+      "cell": {
+        "color": "#1a1a1a",
+        "font": "13px/500",
+        "padding": "16px"
+      }
+    },
+    "dropdown": {
+      "paper": {
+        "background": "#ffffff",
+        "borderRadius": "8px",
+        "boxShadow": "0 0 2px rgba(171,168,164,0.24), 0 20px 40px -4px rgba(171,168,164,0.24)"
+      },
+      "option": {
+        "height": "32px",
+        "padding": "6px 16px",
+        "font": "13px/500"
+      }
+    },
+    "datePicker": {
+      "popperSize": "890x432",
+      "paperRadius": "8px",
+      "paperShadow": "-20px 20px 40px -4px rgba(145,158,171,0.24), 0 0 2px rgba(145,158,171,0.24)",
+      "presetSelectedBackground": "#f5f6ff",
+      "dayButton": {
+        "size": "40x40",
+        "radius": "50%",
+        "font": "14px/600"
+      }
+    }
+  },
+  "layout": {
+    "viewport": "1440x900",
+    "sidebarRail": "88px",
+    "submenuPanel": "280px",
+    "contentArea": "1352px",
+    "contentHeaderHeight": "96px"
+  }
+}
