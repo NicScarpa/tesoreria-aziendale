@@ -1,0 +1,2 @@
+import{u as i,g as n,j as o,cb as a,R as e}from"./index-DS9gJP3A.js";import{S as c}from"./icon-document-upload-DoLJ_3ff.js";import{S as r}from"./icon-upload-BLA8ywDA.js";const l=()=>{const{t}=i("empty_states",{keyPrefix:"importInvoices"}),s=n();return o.jsx(a,{title:t("title"),subtitle:t("subtitle"),mainIcon:o.jsx(c,{}),buttonText:t("button"),buttonIcon:r,onClick:()=>s(e.InvoicesImport.buildLink())})},I="/assets/media_sibill_scadenziario-B16-pFb3.svg";export{l as I,I as O};
+//# sourceMappingURL=media_sibill_scadenziario-ePXb5y7w.js.map

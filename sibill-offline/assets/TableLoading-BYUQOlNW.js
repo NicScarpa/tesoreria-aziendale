@@ -1,0 +1,2 @@
+import{j as r,ai as e}from"./index-C7GZzpi3.js";import{T as i,a as n,b as t}from"./TableHead-CpvQreci.js";import{T as m}from"./TableCell-DmPvXIRE.js";function p({row:a,col:s}){return r.jsxs(r.Fragment,{children:[r.jsx(e,{height:20}),r.jsx(i,{children:r.jsx(n,{children:Array.from({length:a}).map((h,o)=>r.jsx(t,{children:Array.from({length:s}).map((x,l)=>r.jsx(m,{children:r.jsx(e,{height:20})},l))},o))})})]})}export{p as T};
+//# sourceMappingURL=TableLoading-BYUQOlNW.js.map

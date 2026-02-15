@@ -1,0 +1,2 @@
+import{u as r,j as n,c as s,T as h,a1 as l}from"./index-DS9gJP3A.js";const _="_container_1iq85_1",d="_withChildren_1iq85_9",x="_fetching_1iq85_13",t={container:_,withChildren:d,fetching:x},f=({children:i,count:e,className:a,isFetching:c})=>{const{t:o}=r();return n.jsxs("div",{className:s(t.container,a,{[t.withChildren]:l(i)}),children:[n.jsx(h,{variant:"body2",weight:"semibold",className:s(c&&t.fetching),children:o("TABLE_METADATA_RESULTS",{total:e})}),i]})};export{f as M};
+//# sourceMappingURL=Metadata-D00Lxqe9.js.map

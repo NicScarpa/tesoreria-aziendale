@@ -1,0 +1,295 @@
+{
+  "section": "Fatture / Documenti",
+  "url": "https://app.sibill.com/invoices/dashboard",
+  "timestamp": "2026-02-10T13:56:41.824027Z",
+  "total_requests_observed": 5,
+  "unique_endpoints": 3,
+  "apis": [
+    {
+      "endpoint": "/api/v1/documents",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[documentDirection__eq]": "ISSUED",
+          "filter[documentType__in]": "INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE",
+          "filter[status__in]": "CREATED,SENT,DELIVERED,NOT_DELIVERED",
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "include": "flows,category,subcategory,counterpart",
+          "sort": "-searchDate,-creationDate,-createdAt,-id",
+          "page[size]": "50"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": "document",
+          "is_collection": true,
+          "fields": [
+            "lastEmail",
+            "vatAmount",
+            "isEInvoice",
+            "vatCollection",
+            "deletable",
+            "deliveryDate",
+            "hasAttachment",
+            "documentType",
+            "direction",
+            "source",
+            "paymentStatus",
+            "counterpartName",
+            "counterpartIdentifier",
+            "status",
+            "detectionDatetime",
+            "format",
+            "createdAt",
+            "number",
+            "updatedAt",
+            "creationDate",
+            "duplicable",
+            "isInflow",
+            "hiddenAt",
+            "grossAmount",
+            "deliveryStatus",
+            "subjectToReverseCharge",
+            "documentDirection",
+            "eInvoiceType",
+            "withholdingTax",
+            "editable",
+            "vatAmountCompensation",
+            "notes",
+            "isFromRecurrence"
+          ],
+          "relationships": {
+            "company": "belongs_to",
+            "counterpart": "belongs_to",
+            "flows": "has_many"
+          },
+          "included_types": [
+            "counterpart",
+            "flow"
+          ],
+          "pagination": {
+            "page": {
+              "size": 50,
+              "cursor": "g3QAAAAEdwJpZG0AAAAkOTRkMTY2MzgtZTZkNC00MGIyLThhNDQtNzAwZjljZmQwMzdldw1jcmVhdGlvbl9kYXRldAAAAAV3CGNhbGVuZGFydxNFbGl4aXIuQ2FsZW5kYXIuSVNPdwVtb250aGELdwpfX3N0cnVjdF9fdwtFbGl4aXIuRGF0ZXcEeWVhcmIAAAfpdwNkYXlhD3cKY3JlYXRlZF9hdHQAAAANdwttaWNyb3NlY29uZGgCYgABom9hBncGc2Vjb25kYSF3CGNhbGVuZGFydxNFbGl4aXIuQ2FsZW5kYXIuSVNPdwVtb250aGECdwpfX3N0cnVjdF9fdw9FbGl4aXIuRGF0ZVRpbWV3BHllYXJiAAAH6ncGbWludXRlYQ93BGhvdXJhD3cDZGF5YQl3CnV0Y19vZmZzZXRhAHcKc3RkX29mZnNldGEAdwl6b25lX2FiYnJtAAAAA1VUQ3cJdGltZV96b25lbQAAAAdFdGMvVVRDdwtzZWFyY2hfZGF0ZXQAAAANdwttaWNyb3NlY29uZGgCYQBhAHcGc2Vjb25kYQB3CGNhbGVuZGFydxNFbGl4aXIuQ2FsZW5kYXIuSVNPdwVtb250aGELdwpfX3N0cnVjdF9fdw9FbGl4aXIuRGF0ZVRpbWV3BHllYXJiAAAH6XcGbWludXRlYQB3BGhvdXJhAHcDZGF5YQ93CnV0Y19vZmZzZXRhAHcKc3RkX29mZnNldGEAdwl6b25lX2FiYnJtAAAAA1VUQ3cJdGltZV96b25lbQAAAAdFdGMvVVRD"
+            }
+          },
+          "meta": {
+            "page": {
+              "size": "integer",
+              "cursor": "string (len=800)"
+            }
+          }
+        }
+      },
+      "notes": "Visto 3 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/documents-dashboard/summary",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[creationDate__gte]": "2026-01-01",
+          "filter[creationDate__lte]": "2026-12-31",
+          "filter[documentType__in]": "INVOICE,CREDIT_NOTE,DEBIT_NOTE,BILL,SELF_INVOICE,PARCEL",
+          "filter[status__notIn]": "DRAFT,DISCARDED",
+          "filter[hiddenAt__empty]": "true"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "customers": [
+            {
+              "amount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "amountPercentage": "float",
+              "counterpartId": "string",
+              "counterpartIdentifier": "string",
+              "counterpartName": "null",
+              "numberOfDocuments": "integer"
+            },
+            "... (7 items total)"
+          ],
+          "revenueSummary": {
+            "data": [
+              {
+                "costsAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "month": "integer",
+                "revenuesAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "vatCreditAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "vatDebitAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "year": "integer"
+              },
+              "... (12 items total)"
+            ],
+            "totals": {
+              "costsAmount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "netAmount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "revenuesAmount": {
+                "currency": "string",
+                "amount": "string"
+              }
+            }
+          },
+          "suppliers": [
+            {
+              "amount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "amountPercentage": "float",
+              "counterpartId": "string",
+              "counterpartIdentifier": "null",
+              "counterpartName": "string",
+              "numberOfDocuments": "integer"
+            },
+            "... (51 items total)"
+          ],
+          "taxesSummary": {
+            "data": [
+              {
+                "costsAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "month": "integer",
+                "revenuesAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "vatCreditAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "vatDebitAmount": {
+                  "currency": "string",
+                  "amount": "string"
+                },
+                "year": "integer"
+              },
+              "... (12 items total)"
+            ],
+            "totals": {
+              "netAmount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "vatCreditAmount": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "vatDebitAmount": {
+                "currency": "string",
+                "amount": "string"
+              }
+            }
+          }
+        }
+      },
+      "notes": "Visto 1 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/documents/metadata",
+      "method": "GET",
+      "trigger": "page load - metadata fetch",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[documentType__in]": "BILL",
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "total": "integer",
+          "totals": [
+            {
+              "positive": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "currency": "string",
+              "negative": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "negative_money": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "positive_money": {
+                "currency": "string",
+                "amount": "string"
+              }
+            }
+          ],
+          "totalsMoney": [
+            {
+              "positive": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "currency": "string",
+              "negative": {
+                "currency": "string",
+                "amount": "string"
+              }
+            }
+          ],
+          "totalsEur": {
+            "positive": {
+              "currency": "string",
+              "amount": "string"
+            },
+            "currency": "string",
+            "negative": {
+              "currency": "string",
+              "amount": "string"
+            }
+          }
+        }
+      },
+      "notes": "Visto 1 volte. Status osservati: [200]"
+    }
+  ]
+}

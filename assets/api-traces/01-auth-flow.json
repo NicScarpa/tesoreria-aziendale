@@ -1,0 +1,116 @@
+{
+  "section": "Autenticazione",
+  "url": "https://app.sibill.com/login",
+  "timestamp": "2026-02-10T13:56:41.819893Z",
+  "total_requests_observed": 247,
+  "unique_endpoints": 4,
+  "apis": [
+    {
+      "endpoint": "/api/v1/users/chat-token",
+      "method": "GET",
+      "trigger": "page load",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": null,
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "token": "[REDACTED]"
+        }
+      },
+      "notes": "Visto 62 volte. Status osservati: [0, 200]"
+    },
+    {
+      "endpoint": "/api/v1/users/me",
+      "method": "GET",
+      "trigger": "page load - data with relationships",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "include": "companies,companies.companyIdentity,companies.companySettings"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": "user",
+          "is_collection": false,
+          "fields": [
+            "createdAt",
+            "email",
+            "firstName",
+            "identificationStatus",
+            "lastName",
+            "phone",
+            "referralCode",
+            "updatedAt"
+          ],
+          "relationships": {
+            "companies": "has_many"
+          },
+          "included_types": [
+            "company",
+            "company-identity",
+            "company-settings"
+          ],
+          "pagination": null,
+          "meta": null
+        }
+      },
+      "notes": "Visto 124 volte. Status osservati: [0, 200, 401]"
+    },
+    {
+      "endpoint": "/api/v1/users/token",
+      "method": "GET",
+      "trigger": "page load",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": null,
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "token": "[REDACTED]"
+        }
+      },
+      "notes": "Visto 60 volte. Status osservati: [0, 200]"
+    },
+    {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "trigger": "form submit - login",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": null,
+        "body": {
+          "username": "str",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "token": "[REDACTED]"
+        }
+      },
+      "notes": "Visto 1 volte. Status osservati: [200]"
+    }
+  ]
+}

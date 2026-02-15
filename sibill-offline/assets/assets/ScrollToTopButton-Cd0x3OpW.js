@@ -1,0 +1,2 @@
+import{u as r,j as o,al as e}from"./index-DS9gJP3A.js";import{S as a}from"./icon-arrow-up-bHbxvyEc.js";const c="_container_1tx4o_1",i={container:c},p=({onClick:n,visible:s})=>{const{t}=r();return o.jsxs("div",{className:i.container,onClick:n,style:{display:s?"flex":"none"},children:[o.jsx(e,{component:a,size:"sm"}),t("BACK_TO_TOP")]})};export{p as S};
+//# sourceMappingURL=ScrollToTopButton-Cd0x3OpW.js.map

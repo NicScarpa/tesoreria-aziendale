@@ -1,0 +1,58 @@
+{
+  "section": "Categorie Cashflow",
+  "url": "https://app.sibill.com/cashflow/categories",
+  "timestamp": "2026-02-10T13:56:41.820996Z",
+  "total_requests_observed": 8,
+  "unique_endpoints": 1,
+  "apis": [
+    {
+      "endpoint": "/api/v1/categories",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "include": "subcategories",
+          "page[size]": "100"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": "category",
+          "is_collection": true,
+          "fields": [
+            "color",
+            "name"
+          ],
+          "relationships": {
+            "company": "belongs_to",
+            "subcategories": "has_many"
+          },
+          "included_types": [
+            "subcategory"
+          ],
+          "pagination": {
+            "page": {
+              "size": 100,
+              "cursor": "g3QAAAABdwRuYW1lbQAAAAlQZXJzb25hbGU="
+            }
+          },
+          "meta": {
+            "page": {
+              "size": "integer",
+              "cursor": "string"
+            }
+          }
+        }
+      },
+      "notes": "Visto 8 volte. Status osservati: [200]"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+import{b9 as n,j as s,L as r,bR as a,R as i}from"./index-DS9gJP3A.js";import{u as l}from"./document-rule-3hTiJRZm.js";const g=()=>{const t=l(null),e=!n(t.data?.pages.flatMap(u=>u.data)??[]);return t.isLoading||!e&&t.isFetching?s.jsx(r,{}):e?s.jsx(a,{to:i.Outstanding.buildLinkWithChildPath("rules/issued/list"),replace:!0}):s.jsx(a,{to:i.Outstanding.buildLinkWithChildPath("rules/issued/welcome"),replace:!0})};export{g as default};
+//# sourceMappingURL=OutstandingRulesInitPage-T-3AoBTT.js.map

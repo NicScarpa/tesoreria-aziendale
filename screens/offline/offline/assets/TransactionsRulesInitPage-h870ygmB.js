@@ -1,0 +1,2 @@
+import{b9 as r,j as a,L as o,bR as e,R as i}from"./index-DS9gJP3A.js";import{u}from"./transaction-rule-BG9WUE2n.js";const d=()=>{const s=u(null),t=!r(s.data?.pages.flatMap(n=>n.data)??[]);return s.isLoading||!t&&s.isFetching?a.jsx(o,{}):t?a.jsx(e,{to:i.Transactions.buildLinkWithChildPath("rules/inflow/list"),replace:!0}):a.jsx(e,{to:i.Transactions.buildLinkWithChildPath("rules/inflow/welcome"),replace:!0})};export{d as default};
+//# sourceMappingURL=TransactionsRulesInitPage-h870ygmB.js.map

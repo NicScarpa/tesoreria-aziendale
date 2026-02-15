@@ -1,0 +1,2 @@
+import{bY as u,r as c,fA as r}from"./index-DS9gJP3A.js";const d=()=>{const{data:n}=u();return c.useCallback(t=>!t.document.counterpart?.bankIdentifier&&!t.paymentAccount?"":t.paymentMethod===r.Riba||t.paymentMethod===r.Sdd||!t.paymentAccount||(n??[]).flatMap(a=>a.identifiers.filter(e=>e.type==="IBAN").map(e=>e.value)).includes(t.paymentAccount)?t.document.counterpart?.bankIdentifier??"":t.paymentAccount,[n])};export{d as u};
+//# sourceMappingURL=useFlowPaymentAccountIdentifier-B5SfXfAa.js.map

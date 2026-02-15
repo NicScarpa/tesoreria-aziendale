@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:FatturaElettronica xmlns:b="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2" versione="FPR12">
+  <FatturaElettronicaHeader>
+    <DatiTrasmissione>
+      <IdTrasmittente>
+        <IdPaese>IT</IdPaese>
+        <IdCodice>12281740154</IdCodice>
+      </IdTrasmittente>
+      <ProgressivoInvio>2J7LYM</ProgressivoInvio>
+      <FormatoTrasmissione>FPR12</FormatoTrasmissione>
+      <CodiceDestinatario>0000000</CodiceDestinatario>
+      <ContattiTrasmittente>
+        <Email>fatturapa@documi.it</Email>
+      </ContattiTrasmittente>
+    </DatiTrasmissione>
+    <CedentePrestatore>
+      <DatiAnagrafici>
+        <IdFiscaleIVA>
+          <IdPaese>IT</IdPaese>
+          <IdCodice>00494520265</IdCodice>
+        </IdFiscaleIVA>
+        <CodiceFiscale>VLPNNL42H52B160K</CodiceFiscale>
+        <Anagrafica>
+          <Nome>ANNA LIA</Nome>
+          <Cognome>VOLPINI</Cognome>
+        </Anagrafica>
+        <RegimeFiscale>RF01</RegimeFiscale>
+      </DatiAnagrafici>
+      <Sede>
+        <Indirizzo>VIALE DELLA VITTORIA</Indirizzo>
+        <NumeroCivico>214</NumeroCivico>
+        <CAP>31029</CAP>
+        <Comune>VITTORIO VENETO</Comune>
+        <Provincia>TV</Provincia>
+        <Nazione>IT</Nazione>
+      </Sede>
+      <Contatti>
+        <Telefono>043859237</Telefono>
+        <Fax>0438947380</Fax>
+        <Email>annalia.volpini@cgn.legalmail.it</Email>
+      </Contatti>
+    </CedentePrestatore>
+    <CessionarioCommittente>
+      <DatiAnagrafici>
+        <IdFiscaleIVA>
+          <IdPaese>IT</IdPaese>
+          <IdCodice>01723900930</IdCodice>
+        </IdFiscaleIVA>
+        <CodiceFiscale>01723900930</CodiceFiscale>
+        <Anagrafica>
+          <Denominazione>WEISS S.R.L.</Denominazione>
+        </Anagrafica>
+      </DatiAnagrafici>
+      <Sede>
+        <Indirizzo>PIAZZA DEL POPOLO</Indirizzo>
+        <NumeroCivico>15/B</NumeroCivico>
+        <CAP>33077</CAP>
+        <Comune>SACILE</Comune>
+        <Provincia>PN</Provincia>
+        <Nazione>IT</Nazione>
+      </Sede>
+    </CessionarioCommittente>
+    <TerzoIntermediarioOSoggettoEmittente>
+      <DatiAnagrafici>
+        <IdFiscaleIVA>
+          <IdPaese>IT</IdPaese>
+          <IdCodice>01713750931</IdCodice>
+        </IdFiscaleIVA>
+        <Anagrafica>
+          <Denominazione>RDV Network s.r.l.</Denominazione>
+        </Anagrafica>
+      </DatiAnagrafici>
+    </TerzoIntermediarioOSoggettoEmittente>
+    <SoggettoEmittente>TZ</SoggettoEmittente>
+  </FatturaElettronicaHeader>
+  <FatturaElettronicaBody>
+    <DatiGenerali>
+      <DatiGeneraliDocumento>
+        <TipoDocumento>TD06</TipoDocumento>
+        <Divisa>EUR</Divisa>
+        <Data>2026-02-10</Data>
+        <Numero>72</Numero>
+        <DatiRitenuta>
+          <TipoRitenuta>RT01</TipoRitenuta>
+          <ImportoRitenuta>136.00</ImportoRitenuta>
+          <AliquotaRitenuta>20.00</AliquotaRitenuta>
+          <CausalePagamento>A</CausalePagamento>
+        </DatiRitenuta>
+        <DatiCassaPrevidenziale>
+          <TipoCassa>TC02</TipoCassa>
+          <AlCassa>4.00</AlCassa>
+          <ImportoContributoCassa>27.20</ImportoContributoCassa>
+          <ImponibileCassa>680.00</ImponibileCassa>
+          <AliquotaIVA>22.00</AliquotaIVA>
+        </DatiCassaPrevidenziale>
+        <ImportoTotaleDocumento>862.78</ImportoTotaleDocumento>
+        <Causale>Rif. Proforma n. 57 del 21/01/2026</Causale>
+      </DatiGeneraliDocumento>
+    </DatiGenerali>
+    <DatiBeniServizi>
+      <DettaglioLinee>
+        <NumeroLinea>1</NumeroLinea>
+        <Descrizione>Elaborazione libro unico SACILE - Forfait relativo al mese di Novembre 2025 comprensivo di Uniemens, Tabulati/Report vari</Descrizione>
+        <Quantita>10.00</Quantita>
+        <PrezzoUnitario>25.00</PrezzoUnitario>
+        <PrezzoTotale>250.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DettaglioLinee>
+        <NumeroLinea>2</NumeroLinea>
+        <Descrizione>Elaborazione libro unico SACILE - Forfait relativo al mese di Dicembre 2025 comprensivo di Uniemens, Tabulati/Report vari</Descrizione>
+        <Quantita>10.00</Quantita>
+        <PrezzoUnitario>25.00</PrezzoUnitario>
+        <PrezzoTotale>250.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DettaglioLinee>
+        <NumeroLinea>3</NumeroLinea>
+        <Descrizione>Pratiche di collocamento - Assunzione PAIERO VERONICA</Descrizione>
+        <Quantita>1.00</Quantita>
+        <PrezzoUnitario>65.00</PrezzoUnitario>
+        <PrezzoTotale>65.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DettaglioLinee>
+        <NumeroLinea>4</NumeroLinea>
+        <Descrizione>Pratiche di collocamento - Proroga TANUSHI FLORA</Descrizione>
+        <Quantita>1.00</Quantita>
+        <PrezzoUnitario>65.00</PrezzoUnitario>
+        <PrezzoTotale>65.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DettaglioLinee>
+        <NumeroLinea>5</NumeroLinea>
+        <Descrizione>Portale Zucchetti: pubblicazione documenti</Descrizione>
+        <Quantita>1.00</Quantita>
+        <PrezzoUnitario>25.00</PrezzoUnitario>
+        <PrezzoTotale>25.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DettaglioLinee>
+        <NumeroLinea>6</NumeroLinea>
+        <Descrizione>Portale Zucchetti: pubblicazione documenti</Descrizione>
+        <Quantita>1.00</Quantita>
+        <PrezzoUnitario>25.00</PrezzoUnitario>
+        <PrezzoTotale>25.00</PrezzoTotale>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <Ritenuta>SI</Ritenuta>
+      </DettaglioLinee>
+      <DatiRiepilogo>
+        <AliquotaIVA>22.00</AliquotaIVA>
+        <ImponibileImporto>707.20</ImponibileImporto>
+        <Imposta>155.58</Imposta>
+        <EsigibilitaIVA>I</EsigibilitaIVA>
+      </DatiRiepilogo>
+    </DatiBeniServizi>
+    <DatiPagamento>
+      <CondizioniPagamento>TP02</CondizioniPagamento>
+      <DettaglioPagamento>
+        <ModalitaPagamento>MP05</ModalitaPagamento>
+        <DataRiferimentoTerminiPagamento>2026-02-10</DataRiferimentoTerminiPagamento>
+        <DataScadenzaPagamento>2026-02-10</DataScadenzaPagamento>
+        <ImportoPagamento>862.78</ImportoPagamento>
+        <IstitutoFinanziario>UNICREDIT SPA - VITTORIO VENETO VITTORIA</IstitutoFinanziario>
+        <IBAN>IT91L0200862196000002784409</IBAN>
+        <ABI>02008</ABI>
+        <CAB>62196</CAB>
+        <BIC>UNCRITM1UV4</BIC>
+      </DettaglioPagamento>
+    </DatiPagamento>
+  </FatturaElettronicaBody>
+</b:FatturaElettronica>

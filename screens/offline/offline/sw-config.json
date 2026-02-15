@@ -1,0 +1,550 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-02-11T17:34:49.215153",
+  "routes": {
+    "https://api.sibill.com/api/v1/users/me?include=companies,companies.companyIdentity,companies.companySettings": {
+      "file": "api-responses/api_v1_users_me_67a87608.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/auth/login": {
+      "file": "api-responses/api_auth_login.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/users/chat-token": {
+      "file": "api-responses/api_v1_users_chat-token.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/companies/?filter[id__eq]=&include=companyIdentity,companySettings": {
+      "file": "api-responses/api_v1_companies_a5579f66.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/companies/14196c00-6ac1-4bab-9874-9b01c2fe17a7?filter[id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=companyIdentity,companySettings": {
+      "file": "api-responses/api_v1_companies_14196c00-6ac1-4bab-9874-9b01c2fe17a7_4619cc7d.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/users/me?include=companies,companies.companyIdentity,companies.companySettings,companies.subscriptions": {
+      "file": "api-responses/api_v1_users_me_0bea5600.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/consents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[for_consent.id__empty]=true&filter[status__notIn]=AUTHORIZED,DISABLED&include=accounts": {
+      "file": "api-responses/api_v1_consents_a3f5e26c.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/consents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[institution.types__contains]=BANKING&filter[purpose__eq]=SYNC&include=institution,accounts,user&page[size]=100": {
+      "file": "api-responses/api_v1_consents_e7531e56.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/consents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[institution.id__empty]=true&filter[purpose__eq]=SYNC&include=institution,accounts,user&page[size]=100": {
+      "file": "api-responses/api_v1_consents_c402d5af.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/accounts?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=consent.institution&page[size]=100": {
+      "file": "api-responses/api_v1_accounts_0887c762.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/payments/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[status__in]=TIMEOUT": {
+      "file": "api-responses/api_v1_payments_metadata_88758584.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/user-bank-accounts?filter[bankAccount.company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[source__eq]=SWAN&filter[user.id__eq]=9852007b-9c80-4335-91f7-26902e73e58f&include=user": {
+      "file": "api-responses/api_v1_user-bank-accounts_832a7a6d.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/consents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[institution.types__contains]=ACCOUNTING&filter[purpose__eq]=SYNC&include=institution,accounts,user&page[size]=100": {
+      "file": "api-responses/api_v1_consents_4816fff2.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/subscriptions?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&page[size]=25": {
+      "file": "api-responses/api_v1_subscriptions_7775a19b.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/user-bank-accounts?filter[bankAccount.company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[source__eq]=SWAN&filter[status__in]=INVITATION_SENT,BINDING_USER_ERROR&filter[user.id__eq]=9852007b-9c80-4335-91f7-26902e73e58f&include=user": {
+      "file": "api-responses/api_v1_user-bank-accounts_430ceb32.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/categories?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=subcategories&page[size]=100": {
+      "file": "api-responses/api_v1_categories_f4b1a700.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/cashflow/chart?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&from=2025-08-31T22:00:00.000Z&includeBudgets=false&includeOverdue=false&includePastdue=false&timezone=Europe/Rome&to=2026-08-31T21:59:59.999Z": {
+      "file": "api-responses/api_v1_cashflow_chart_eb662051.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/cashflow/table?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[date__gte]=2025-08-31T22:00:00.000Z&filter[date__lte]=2026-08-31T21:59:59.999Z&filter[hiddenAt__empty]=true&includeBudgets=false&includeOverdue=false&includePastdue=false&timezone=Europe/Rome": {
+      "file": "api-responses/api_v1_cashflow_table_e4019ea7.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/cashflow/table?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[date__gte]=2024-08-31T22:00:00.000Z&filter[date__lte]=2026-08-31T21:59:59.999Z&filter[hiddenAt__empty]=true&includeBudgets=false&includeOverdue=false&includePastdue=false&timezone=Europe/Rome": {
+      "file": "api-responses/api_v1_cashflow_table_484dc6e5.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/accounts/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[consent.status__neq]=DISABLED&filter[ignoreBalance__eq]=false": {
+      "file": "api-responses/api_v1_accounts_metadata_c1ad9edd.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/users/token": {
+      "file": "api-responses/api_v1_users_token.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/cards?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=company&page[size]=100": {
+      "file": "api-responses/api_v1_cards_94deb25c.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/transactions?fields[reconciliation]=&filter[account.hiddenAt__empty]=true&filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=account,account.consent.institution,allocations,allocations.category,allocations.subcategory,attachments,card,category,reconciliations,subcategory,payment,payment.attachments&page[cursor]=&page[size]=50&sort=-date,-createdAt,-id": {
+      "file": "api-responses/api_v1_transactions_c0b78329.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/reconciliations/?filter[id__in]=ce7d0359-70ed-43f3-a838-bec0d4d15b5a,1bb4ae85-dcbe-440c-8a5c-d72abb25c375,fc289614-7e1e-4798-ab66-6e059c49641d,2e785fd0-3ee2-487f-8f90-0457e1c071c3,d051fa2e-2aeb-4706-963d-d2df1bbaaffc,fbe0c166-5c83-44cd-b24b-64adec905547,c200e9b4-dffb-4c4a-81d3-8d72366e3152,d5e7a653-1951-4c60-8027-f96c7f3bd889,17b114f2-1b98-4831-a447-9390bc4d053d,259058a6-7a02-4674-a225-77e53f6ce979,a5d4c0a9-d23c-4368-9de1-ed37ed78a25a,d3bb90a7-83b8-4cea-ba67-9f8ac9ee3842,16c33ac7-e751-4980-aa23-dbd655c1e390&include=transaction": {
+      "file": "api-responses/api_v1_reconciliations_e307cb12.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/transactions/reconciliations?filter[id__in]=cb598e1c-7151-4558-9e23-0bec7df5b334,68efb235-a971-4f16-93f9-d48c762587a5,3cfff2f9-b3d6-4896-a692-caa37ae853c3,e0ca4d4b-4bda-49a3-8a1f-9344e4d6d403,976473d1-713f-4716-8f39-58b484fe7506,3708a79a-13a8-4527-9cb0-3809e0299282,f60910f0-35e5-4225-8fee-c5c41b191224,88be70e4-e0f3-4f60-97c1-064ca66525b5,44091c7a-28f4-4bca-aade-571b5d86b485,16093570-8d09-49cf-afe4-0227a7b8a36f,f445ebb1-3bf4-416c-8266-c326277a1f2f,f09b0fb0-3815-4ced-a6f9-f154222836ba,be2a7ca1-7ebd-430e-862f-11a4a466f93d,bc7a77ca-b138-4585-bc2c-967b22deea99,98a32f99-bd6d-4918-8d3b-daf05bee42ef,906414c5-27f4-4d3c-8f84-3a25a6ffabff,71b79ef2-d278-46c1-a0c7-ee3a31172d40,5bb19c3f-97f5-423f-a5e1-5dafe94e0dfc,357d454a-2d14-4084-83a2-14d9795f8b23,1b5cfab8-934f-491f-bc80-d5cf7cdab346,16872ad8-dc20-4f1d-9d9f-d85460b0c108&filter[verificationStatus__eq]=TO_VERIFY": {
+      "file": "api-responses/api_v1_transactions_reconciliations_f079da47.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/payments/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[status__in]=TIMEOUT,PENDING": {
+      "file": "api-responses/api_v1_payments_metadata_65e2460f.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/payments/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[status__in]=ACCEPTED,PENDING,FAILED,SUCCEEDED,TIMEOUT": {
+      "file": "api-responses/api_v1_payments_metadata_f0ef4efd.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/payments?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[status__in]=ACCEPTED,PENDING,FAILED,SUCCEEDED,TIMEOUT&include=account,account.consent,account.consent.institution,counterpart,attachments,transactions,parent,retry_attempts&page[size]=50&sort=-createdAt": {
+      "file": "api-responses/api_v1_payments_4681ef78.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/rules?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[ruleType__eq]=TRANSACTION&include=updatedBy,createdBy&page[size]=20&sort=-priority": {
+      "file": "api-responses/api_v1_rules_6e00abbb.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/transactions/proposed-rules?filter[account.hiddenAt__empty]=true&filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7": {
+      "file": "api-responses/api_v1_transactions_proposed-rules_f245a6c0.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/rules?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[direction__eq]=INFLOW&filter[ruleType__eq]=TRANSACTION&include=updatedBy,createdBy&page[size]=20&sort=-priority": {
+      "file": "api-responses/api_v1_rules_04a8fd94.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/reconciliations?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[source__in]=AUTOMATIC&filter[status__eq]=VERIFIED&include=flow,flow.document,flow.document.counterpart,transaction,transaction.account,transaction.account.consent,transaction.account.consent.institution&page[size]=50&sort=-createdAt,-id": {
+      "file": "api-responses/api_v1_reconciliations_70db1af6.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/institutions?filter[source__eq]=SWAN&filter[types__contains]=BANKING&page[size]=20": {
+      "file": "api-responses/api_v1_institutions_14400dfb.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/outstanding/chart?count=4&filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[document.documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE,OTHER&filter[document.hiddenAt__empty]=true&frequency=month": {
+      "file": "api-responses/api_v1_outstanding_chart_2debab15.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/flows/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[document.documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE,BILL&filter[document.hiddenAt__empty]=true&filter[paymentStatus__eq]=TO_PAY": {
+      "file": "api-responses/api_v1_flows_metadata_77153bc1.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/flows?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[document.documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE,BILL&filter[document.hiddenAt__empty]=true&filter[paymentStatus__eq]=TO_PAY&include=company,document,document.flows,account,document.category,document.subcategory,document.counterpart,payments&page[cursor]=&page[size]=35&sort=expectedPaymentDate,paymentDate,createdAt,id": {
+      "file": "api-responses/api_v1_flows_2a698375.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/flows/reconciliations?filter[document.hiddenAt__empty]=true&filter[id__in]=a02a5471-a6ea-4729-b4af-8dd0df14d8c8,e0bc4d78-acd9-4ca1-b518-444a922455ec,d3ac8999-7b8a-4f77-b029-97098191efa6,a7de9345-d7a1-4ff7-ae36-14d7f1339bd7,97fa2601-82eb-4566-ae7c-d1e0ce394e50,b365cdea-a625-48d3-a504-850f8880de4f,0b4b5f60-4e1d-4812-bfde-ee729afc592f,d982f19d-14f1-4bc8-8975-38ed66dc39e8,5bd9d6a6-1097-40bf-b85f-24f33454e063,5bdffd7d-6a7f-4a3c-b46a-ebf86f4168f5,9d7b0ea3-68b8-4eb4-8f4e-1c9c29950afd,7faed611-18e1-4b16-9693-5f66c230ab27,e406869c-ec65-49f4-a81b-fbc37b818bf1,96eb1146-8068-483a-bbe7-26ee1148f6b5,98d8d422-003a-4c07-b062-c87ecf8b184d,86f6c196-d295-4c65-92bf-37c97afdfdf2,6c5b9f21-7a63-49ff-b117-02ee4b66c777,05479e1c-a1e2-41f3-b65b-f9d179c6e69d,684cc284-ce0a-4f00-aed6-2ee645e31ae2,8cba9b39-d240-4956-9273-a57130e4de0c&filter[paymentStatus__eq]=TO_PAY": {
+      "file": "api-responses/api_v1_flows_reconciliations_d4e01bb9.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/recurrences?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=account,account.consent,account.consent.institution,category,subcategory&page[size]=100": {
+      "file": "api-responses/api_v1_recurrences_2a8226ed.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/rules?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[ruleType__eq]=DOCUMENT&include=updatedBy,createdBy&page[size]=20&sort=-priority": {
+      "file": "api-responses/api_v1_rules_b91d88db.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/documents-dashboard/summary?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[creationDate__gte]=2026-01-01&filter[creationDate__lte]=2026-12-31&filter[documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,BILL,SELF_INVOICE,PARCEL&filter[hiddenAt__empty]=true&filter[status__notIn]=DRAFT,DISCARDED": {
+      "file": "api-responses/api_v1_documents-dashboard_summary_020b9690.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/documents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[documentDirection__eq]=ISSUED&filter[documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE&filter[status__in]=CREATED,SENT,DELIVERED,NOT_DELIVERED&include=flows,category,subcategory,counterpart&page[size]=50&sort=-searchDate,-creationDate,-createdAt,-id": {
+      "file": "api-responses/api_v1_documents_9ed0a289.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/documents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[documentDirection__eq]=RECEIVED&filter[documentType__in]=INVOICE,CREDIT_NOTE,DEBIT_NOTE,PARCEL,SELF_INVOICE&filter[status__in]=CREATED,DELIVERED,DISCARDED,NOT_DELIVERED,SENT&include=flows,category,subcategory,counterpart&page[size]=50&sort=-searchDate,-creationDate,-createdAt,-id": {
+      "file": "api-responses/api_v1_documents_f5429229.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/documents?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[documentType__in]=BILL&include=flows,category,subcategory,counterpart&page[size]=50&sort=-creationDate,-createdAt,-id": {
+      "file": "api-responses/api_v1_documents_b2c854e9.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/counterparts?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[kind__eq]=VIRTUAL&include=receivedCategory,receivedSubcategory&page[size]=50": {
+      "file": "api-responses/api_v1_counterparts_382c0ee0.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/documents/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[documentType__in]=BILL": {
+      "file": "api-responses/api_v1_documents_metadata_4003b898.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/counterparts?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[kind__neq]=VIRTUAL&filter[parent.id__empty]=true&include=account,children,issuedCategory,issuedSubcategory,receivedCategory,receivedSubcategory&page[size]=50&sort=company_name,id": {
+      "file": "api-responses/api_v1_counterparts_e8ca1667.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/companies/14196c00-6ac1-4bab-9874-9b01c2fe17a7?include=companyIdentity": {
+      "file": "api-responses/api_v1_companies_14196c00-6ac1-4bab-9874-9b01c2fe17a7_8eaaca6f.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/company-users?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&include=user": {
+      "file": "api-responses/api_v1_company-users_7d6d473c.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/counterparts/suggested?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[contactEmail__empty]=false&filter[kind__neq]=VIRTUAL&filter[parent.id__empty]=true": {
+      "file": "api-responses/api_v1_counterparts_suggested_6e51f273.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/counterparts?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[contactEmail__empty]=false&filter[kind__neq]=VIRTUAL&filter[parent.id__empty]=true&include=account,children,issuedCategory,issuedSubcategory,receivedCategory,receivedSubcategory&page[size]=50&sort=company_name,id": {
+      "file": "api-responses/api_v1_counterparts_f5a4f49a.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    },
+    "https://api.sibill.com/api/v1/counterparts/metadata?filter[company.id__eq]=14196c00-6ac1-4bab-9874-9b01c2fe17a7&filter[contactEmail__empty]=false&filter[kind__neq]=VIRTUAL&filter[parent.id__empty]=true": {
+      "file": "api-responses/api_v1_counterparts_metadata_6e51f273.json",
+      "contentType": "application/json; charset=utf-8",
+      "status": 200
+    }
+  },
+  "pathFallbacks": {
+    "/api/v1/users/me": "api-responses/api_v1_users_me_67a87608.json",
+    "/api/auth/login": "api-responses/api_auth_login.json",
+    "/api/v1/users/chat-token": "api-responses/api_v1_users_chat-token.json",
+    "/api/v1/companies/": "api-responses/api_v1_companies_a5579f66.json",
+    "/api/v1/companies/14196c00-6ac1-4bab-9874-9b01c2fe17a7": "api-responses/api_v1_companies_14196c00-6ac1-4bab-9874-9b01c2fe17a7_4619cc7d.json",
+    "/api/v1/consents": "api-responses/api_v1_consents_a3f5e26c.json",
+    "/api/v1/accounts": "api-responses/api_v1_accounts_0887c762.json",
+    "/api/v1/payments/metadata": "api-responses/api_v1_payments_metadata_88758584.json",
+    "/api/v1/user-bank-accounts": "api-responses/api_v1_user-bank-accounts_832a7a6d.json",
+    "/api/v1/subscriptions": "api-responses/api_v1_subscriptions_7775a19b.json",
+    "/api/v1/categories": "api-responses/api_v1_categories_f4b1a700.json",
+    "/api/v1/cashflow/chart": "api-responses/api_v1_cashflow_chart_eb662051.json",
+    "/api/v1/cashflow/table": "api-responses/api_v1_cashflow_table_e4019ea7.json",
+    "/api/v1/accounts/metadata": "api-responses/api_v1_accounts_metadata_c1ad9edd.json",
+    "/api/v1/users/token": "api-responses/api_v1_users_token.json",
+    "/api/v1/cards": "api-responses/api_v1_cards_94deb25c.json",
+    "/api/v1/transactions": "api-responses/api_v1_transactions_c0b78329.json",
+    "/api/v1/reconciliations/": "api-responses/api_v1_reconciliations_e307cb12.json",
+    "/api/v1/transactions/reconciliations": "api-responses/api_v1_transactions_reconciliations_f079da47.json",
+    "/api/v1/payments": "api-responses/api_v1_payments_4681ef78.json",
+    "/api/v1/rules": "api-responses/api_v1_rules_6e00abbb.json",
+    "/api/v1/transactions/proposed-rules": "api-responses/api_v1_transactions_proposed-rules_f245a6c0.json",
+    "/api/v1/reconciliations": "api-responses/api_v1_reconciliations_70db1af6.json",
+    "/api/v1/institutions": "api-responses/api_v1_institutions_14400dfb.json",
+    "/api/v1/outstanding/chart": "api-responses/api_v1_outstanding_chart_2debab15.json",
+    "/api/v1/flows/metadata": "api-responses/api_v1_flows_metadata_77153bc1.json",
+    "/api/v1/flows": "api-responses/api_v1_flows_2a698375.json",
+    "/api/v1/flows/reconciliations": "api-responses/api_v1_flows_reconciliations_d4e01bb9.json",
+    "/api/v1/recurrences": "api-responses/api_v1_recurrences_2a8226ed.json",
+    "/api/v1/documents-dashboard/summary": "api-responses/api_v1_documents-dashboard_summary_020b9690.json",
+    "/api/v1/documents": "api-responses/api_v1_documents_9ed0a289.json",
+    "/api/v1/counterparts": "api-responses/api_v1_counterparts_382c0ee0.json",
+    "/api/v1/documents/metadata": "api-responses/api_v1_documents_metadata_4003b898.json",
+    "/api/v1/company-users": "api-responses/api_v1_company-users_7d6d473c.json",
+    "/api/v1/counterparts/suggested": "api-responses/api_v1_counterparts_suggested_6e51f273.json",
+    "/api/v1/counterparts/metadata": "api-responses/api_v1_counterparts_metadata_6e51f273.json"
+  },
+  "blockedDomains": [
+    "satismeter.com",
+    "gist.build",
+    "customer.io",
+    "linkedin.com",
+    "hubspot.com",
+    "hotjar.com",
+    "facebook.net",
+    "facebook.com",
+    "fbcdn.net",
+    "exceptions.sibill.com",
+    "tracking.sibill.com",
+    "sentry.io",
+    "intercom.io",
+    "intercomcdn.com",
+    "segment.io",
+    "segment.com",
+    "google-analytics.com",
+    "googletagmanager.com",
+    "doubleclick.net"
+  ],
+  "assetRoutes": {
+    "https://app.sibill.com/assets/index-DS9gJP3A.js": "assets/index-DS9gJP3A.js",
+    "https://app.sibill.com/assets/index-BmKwYxlT.css": "assets/index-BmKwYxlT.css",
+    "https://app.sibill.com/favicon/favicon.svg": "assets/favicon.svg",
+    "https://app.sibill.com/assets/index-CdwdnLWV.js": "assets/index-CdwdnLWV.js",
+    "https://app.sibill.com/assets/is-plan-event-enabled-DeNtQvA5.js": "assets/is-plan-event-enabled-DeNtQvA5.js",
+    "https://app.sibill.com/assets/Login-BDhacnvd.js": "assets/Login-BDhacnvd.js",
+    "https://app.sibill.com/assets/icon-padlock-closed-mf1ngh-Q.js": "assets/icon-padlock-closed-mf1ngh-Q.js",
+    "https://app.sibill.com/assets/OnboardingHeading-DqIaBHV-.js": "assets/OnboardingHeading-DqIaBHV-.js",
+    "https://app.sibill.com/assets/ico-brand-time-rZpJtFxH.js": "assets/ico-brand-time-rZpJtFxH.js",
+    "https://app.sibill.com/assets/OnboardingHeading-DQ-hoTJz.css": "assets/OnboardingHeading-DQ-hoTJz.css",
+    "https://app.sibill.com/assets/Login-D7sNB50U.css": "assets/Login-D7sNB50U.css",
+    "https://app.sibill.com/assets/index-CYJSRmkz.js": "assets/index-CYJSRmkz.js",
+    "https://app.sibill.com/assets/CompanyRedirect-I6F0SH0b.js": "assets/CompanyRedirect-I6F0SH0b.js",
+    "https://app.sibill.com/assets/CashSection-BfqhmaaW.js": "assets/CashSection-BfqhmaaW.js",
+    "https://app.sibill.com/assets/gestione_tesoreria-DJwNP0Aw.js": "assets/gestione_tesoreria-DJwNP0Aw.js",
+    "https://app.sibill.com/assets/CashFlowPage.module-B1qo_pkQ.js": "assets/CashFlowPage.module-B1qo_pkQ.js",
+    "https://app.sibill.com/assets/CashFlowPage-GF16rdD7.css": "assets/CashFlowPage-GF16rdD7.css",
+    "https://app.sibill.com/assets/AddAccountingAction-CBddtV52.js": "assets/AddAccountingAction-CBddtV52.js",
+    "https://app.sibill.com/assets/AddAccountingConsent-BgibfTDY.js": "assets/AddAccountingConsent-BgibfTDY.js",
+    "https://app.sibill.com/assets/AddAccountingConsent-WQQGsTry.css": "assets/AddAccountingConsent-WQQGsTry.css",
+    "https://app.sibill.com/assets/AddAccountingAction-C624731g.css": "assets/AddAccountingAction-C624731g.css",
+    "https://app.sibill.com/assets/AddBankingAction---CISCgT.js": "assets/AddBankingAction---CISCgT.js",
+    "https://app.sibill.com/assets/CashFlowPage-7ri_Bpur.js": "assets/CashFlowPage-7ri_Bpur.js",
+    "https://app.sibill.com/assets/CashNavigationTabs-BT6Um-pE.js": "assets/CashNavigationTabs-BT6Um-pE.js",
+    "https://app.sibill.com/assets/BankAccountFilter-B38JJRwU.js": "assets/BankAccountFilter-B38JJRwU.js",
+    "https://app.sibill.com/assets/eachYearOfInterval-Bw_n0Yn7.js": "assets/eachYearOfInterval-Bw_n0Yn7.js",
+    "https://app.sibill.com/assets/getYear-BZt9747j.js": "assets/getYear-BZt9747j.js",
+    "https://app.sibill.com/assets/CashNavigationTabs-DzguMfVs.css": "assets/CashNavigationTabs-DzguMfVs.css",
+    "https://app.sibill.com/assets/SplitAside-XP3SIDfs.js": "assets/SplitAside-XP3SIDfs.js",
+    "https://app.sibill.com/assets/SplitLayout.module-CE1-MbOb.js": "assets/SplitLayout.module-CE1-MbOb.js",
+    "https://app.sibill.com/assets/SplitLayout-CB1oYbMT.css": "assets/SplitLayout-CB1oYbMT.css",
+    "https://app.sibill.com/assets/InvoiceCategoryTableCell-DwKA7_ze.js": "assets/InvoiceCategoryTableCell-DwKA7_ze.js",
+    "https://app.sibill.com/assets/categorization-utils-CUZO_oyh.js": "assets/categorization-utils-CUZO_oyh.js",
+    "https://app.sibill.com/assets/escapeRegExp-BJh3gAJX.js": "assets/escapeRegExp-BJh3gAJX.js",
+    "https://app.sibill.com/assets/CategoryEditableChip-CIxti97k.js": "assets/CategoryEditableChip-CIxti97k.js",
+    "https://app.sibill.com/assets/CategoryChip-E_GXi299.js": "assets/CategoryChip-E_GXi299.js",
+    "https://app.sibill.com/assets/CategorySearch-QI1tL1Zf.js": "assets/CategorySearch-QI1tL1Zf.js",
+    "https://app.sibill.com/assets/index-BV7ePIOd.js": "assets/index-BV7ePIOd.js",
+    "https://app.sibill.com/assets/DeleteSubcategoryDialog-ly7M72Vn.js": "assets/DeleteSubcategoryDialog-ly7M72Vn.js",
+    "https://app.sibill.com/assets/ListItem-DSIOq399.js": "assets/ListItem-DSIOq399.js",
+    "https://app.sibill.com/assets/DeleteSubcategoryDialog-BduGzeep.css": "assets/DeleteSubcategoryDialog-BduGzeep.css",
+    "https://app.sibill.com/assets/ListItemIcon-DOWj5zzn.js": "assets/ListItemIcon-DOWj5zzn.js",
+    "https://app.sibill.com/assets/CategorySearch-BTZwmWzv.css": "assets/CategorySearch-BTZwmWzv.css",
+    "https://app.sibill.com/assets/CategoryEditableChip-Ck4Fn0BU.css": "assets/CategoryEditableChip-Ck4Fn0BU.css",
+    "https://app.sibill.com/assets/EmptyState-tUCdYQtC.js": "assets/EmptyState-tUCdYQtC.js",
+    "https://app.sibill.com/assets/EmptyState-DZT2ts7S.css": "assets/EmptyState-DZT2ts7S.css",
+    "https://app.sibill.com/assets/math-hkulS2uC.js": "assets/math-hkulS2uC.js",
+    "https://app.sibill.com/assets/icon-robot-BPLGFiLO.js": "assets/icon-robot-BPLGFiLO.js",
+    "https://app.sibill.com/assets/math-DzRnlFa_.css": "assets/math-DzRnlFa_.css",
+    "https://app.sibill.com/assets/InfoIconTooltip-CUGe9GQW.js": "assets/InfoIconTooltip-CUGe9GQW.js",
+    "https://app.sibill.com/assets/InfoIconTooltip-DpPNnuPN.css": "assets/InfoIconTooltip-DpPNnuPN.css",
+    "https://app.sibill.com/assets/CurrencyAddon-CfiinaWZ.js": "assets/CurrencyAddon-CfiinaWZ.js",
+    "https://app.sibill.com/assets/CurrencyIcon-C4cB4me9.js": "assets/CurrencyIcon-C4cB4me9.js",
+    "https://app.sibill.com/assets/CurrencyIcon-D8FVcmhA.css": "assets/CurrencyIcon-D8FVcmhA.css",
+    "https://app.sibill.com/assets/CartesianChart-CHWOJEwD.js": "assets/CartesianChart-CHWOJEwD.js",
+    "https://app.sibill.com/assets/ReferenceLine-BYGUmvVV.js": "assets/ReferenceLine-BYGUmvVV.js",
+    "https://app.sibill.com/assets/Line-CMTJLO-0.js": "assets/Line-CMTJLO-0.js",
+    "https://app.sibill.com/assets/icon-arrow-match-CjNzLX8F.js": "assets/icon-arrow-match-CjNzLX8F.js",
+    "https://app.sibill.com/assets/icon-chevron-up-DAil5DyO.js": "assets/icon-chevron-up-DAil5DyO.js",
+    "https://app.sibill.com/assets/useConfirmationModal-DNQ7Btn1.js": "assets/useConfirmationModal-DNQ7Btn1.js",
+    "https://app.sibill.com/assets/SubcategorySearch-CEi0BExe.js": "assets/SubcategorySearch-CEi0BExe.js",
+    "https://app.sibill.com/assets/icon-arrow-expand-BbE9t17f.js": "assets/icon-arrow-expand-BbE9t17f.js",
+    "https://app.sibill.com/assets/CashFlowPage-B7PHiYW_.css": "assets/CashFlowPage-B7PHiYW_.css",
+    "https://app.sibill.com/assets/CategoriesPage-CIyyaO6d.js": "assets/CategoriesPage-CIyyaO6d.js",
+    "https://app.sibill.com/assets/CategoriesPage-CkRuIUQK.css": "assets/CategoriesPage-CkRuIUQK.css",
+    "https://app.sibill.com/assets/TransactionsSection-BY9LYO12.js": "assets/TransactionsSection-BY9LYO12.js",
+    "https://app.sibill.com/assets/TransactionsSection-DRnIAaqn.css": "assets/TransactionsSection-DRnIAaqn.css",
+    "https://app.sibill.com/assets/Transactions-DHRe_ALG.js": "assets/Transactions-DHRe_ALG.js",
+    "https://app.sibill.com/assets/AsideTotalAmount-DLio-4Ww.js": "assets/AsideTotalAmount-DLio-4Ww.js",
+    "https://app.sibill.com/assets/AsideTotalAmount-DE7xRiTC.css": "assets/AsideTotalAmount-DE7xRiTC.css",
+    "https://app.sibill.com/assets/BulkCategorySection-DQbOazgL.js": "assets/BulkCategorySection-DQbOazgL.js",
+    "https://app.sibill.com/assets/BulkCategorySection-CwCwGSoQ.css": "assets/BulkCategorySection-CwCwGSoQ.css",
+    "https://app.sibill.com/assets/AsideSummaryView-CvJPFYmU.js": "assets/AsideSummaryView-CvJPFYmU.js",
+    "https://app.sibill.com/assets/AsideSummaryView-D2t4pw4h.css": "assets/AsideSummaryView-D2t4pw4h.css",
+    "https://app.sibill.com/assets/RowDotAlert-CzG34xu3.js": "assets/RowDotAlert-CzG34xu3.js",
+    "https://app.sibill.com/assets/AmountWithUnit-BYauQoqc.js": "assets/AmountWithUnit-BYauQoqc.js",
+    "https://app.sibill.com/assets/AmountWithUnit-DzOnzXw4.css": "assets/AmountWithUnit-DzOnzXw4.css",
+    "https://app.sibill.com/assets/ReconciliationCommon-CPCq_J2n.js": "assets/ReconciliationCommon-CPCq_J2n.js",
+    "https://app.sibill.com/assets/ReconciliationCommon-BYOYXcGW.css": "assets/ReconciliationCommon-BYOYXcGW.css",
+    "https://app.sibill.com/assets/RowDotAlert-x79ExBIm.css": "assets/RowDotAlert-x79ExBIm.css",
+    "https://app.sibill.com/assets/icon-attach-CfW5XP6N.js": "assets/icon-attach-CfW5XP6N.js",
+    "https://app.sibill.com/assets/icon-upload-BLA8ywDA.js": "assets/icon-upload-BLA8ywDA.js",
+    "https://app.sibill.com/assets/RecurrenceFormDialog-DjLA7GY7.js": "assets/RecurrenceFormDialog-DjLA7GY7.js",
+    "https://app.sibill.com/assets/RecurrenceFormDialog-B-470Tkq.css": "assets/RecurrenceFormDialog-B-470Tkq.css",
+    "https://app.sibill.com/assets/ReconciliationIcons-L12rAt8W.js": "assets/ReconciliationIcons-L12rAt8W.js",
+    "https://app.sibill.com/assets/ReconciliationIcons-_rqia_Q7.css": "assets/ReconciliationIcons-_rqia_Q7.css",
+    "https://app.sibill.com/assets/QuickFilters-BzG9hGU4.js": "assets/QuickFilters-BzG9hGU4.js",
+    "https://app.sibill.com/assets/QuickFilters-3w3LJCEW.css": "assets/QuickFilters-3w3LJCEW.css",
+    "https://app.sibill.com/assets/DataTableHead-CVyaT-9G.js": "assets/DataTableHead-CVyaT-9G.js",
+    "https://app.sibill.com/assets/TableHead-BhjzhGkU.js": "assets/TableHead-BhjzhGkU.js",
+    "https://app.sibill.com/assets/DataTableHead-03nwPTi1.css": "assets/DataTableHead-03nwPTi1.css",
+    "https://app.sibill.com/assets/ScrollToTopButton-Cd0x3OpW.js": "assets/ScrollToTopButton-Cd0x3OpW.js",
+    "https://app.sibill.com/assets/icon-arrow-up-bHbxvyEc.js": "assets/icon-arrow-up-bHbxvyEc.js",
+    "https://app.sibill.com/assets/ScrollToTopButton-PIkTozDf.css": "assets/ScrollToTopButton-PIkTozDf.css",
+    "https://app.sibill.com/assets/DataTableHeading-Do7BrD9j.js": "assets/DataTableHeading-Do7BrD9j.js",
+    "https://app.sibill.com/assets/TableCell-DL2EQmPw.js": "assets/TableCell-DL2EQmPw.js",
+    "https://app.sibill.com/assets/DataTableHeading-BHQO8xMa.css": "assets/DataTableHeading-BHQO8xMa.css",
+    "https://app.sibill.com/assets/CategoryFilter-CnPt2Bjl.js": "assets/CategoryFilter-CnPt2Bjl.js",
+    "https://app.sibill.com/assets/Metadata-D00Lxqe9.js": "assets/Metadata-D00Lxqe9.js",
+    "https://app.sibill.com/assets/Metadata-Nwgvf-Ee.css": "assets/Metadata-Nwgvf-Ee.css",
+    "https://app.sibill.com/assets/SplitMain-DHrhmHRp.js": "assets/SplitMain-DHrhmHRp.js",
+    "https://app.sibill.com/assets/TableLoading-D9RaB4sH.js": "assets/TableLoading-D9RaB4sH.js",
+    "https://app.sibill.com/assets/icon-document-upload-DoLJ_3ff.js": "assets/icon-document-upload-DoLJ_3ff.js",
+    "https://app.sibill.com/assets/module-fZAgqTql.js": "assets/module-fZAgqTql.js",
+    "https://app.sibill.com/assets/icon-table-BF1LyptY.js": "assets/icon-table-BF1LyptY.js",
+    "https://app.sibill.com/assets/TransactionsTabs-DS7RNSet.js": "assets/TransactionsTabs-DS7RNSet.js",
+    "https://app.sibill.com/assets/TransactionsTabs-D8dONylC.css": "assets/TransactionsTabs-D8dONylC.css",
+    "https://app.sibill.com/assets/Transactions-CaS_upnD.css": "assets/Transactions-CaS_upnD.css",
+    "https://app.sibill.com/assets/PaymentPage-C29T0Vcc.js": "assets/PaymentPage-C29T0Vcc.js",
+    "https://app.sibill.com/assets/PaymentResultChecker-xBrajbJ-.js": "assets/PaymentResultChecker-xBrajbJ-.js",
+    "https://app.sibill.com/assets/PaymentResultChecker-CHp5IkKW.css": "assets/PaymentResultChecker-CHp5IkKW.css",
+    "https://app.sibill.com/assets/bulk-payment-import-DRSUfVQ5.js": "assets/bulk-payment-import-DRSUfVQ5.js",
+    "https://app.sibill.com/assets/PaymentPage-Bl9XQl51.css": "assets/PaymentPage-Bl9XQl51.css",
+    "https://app.sibill.com/assets/TransactionsRulesRoute-DSQE9gaa.js": "assets/TransactionsRulesRoute-DSQE9gaa.js",
+    "https://app.sibill.com/assets/transactionsRulesTable-Dapejafw.js": "assets/transactionsRulesTable-Dapejafw.js",
+    "https://app.sibill.com/assets/TransactionsRulesRoute-FqfiAI9s.css": "assets/TransactionsRulesRoute-FqfiAI9s.css",
+    "https://app.sibill.com/assets/TransactionsRulesInitPage-h870ygmB.js": "assets/TransactionsRulesInitPage-h870ygmB.js",
+    "https://app.sibill.com/assets/transaction-rule-BG9WUE2n.js": "assets/transaction-rule-BG9WUE2n.js",
+    "https://app.sibill.com/assets/TransactionsRulesListPage-HAJv1P_l.js": "assets/TransactionsRulesListPage-HAJv1P_l.js",
+    "https://app.sibill.com/assets/RuleListHeader-B3pi4UOB.js": "assets/RuleListHeader-B3pi4UOB.js",
+    "https://app.sibill.com/assets/icon-arrow-down-CZkp3OgT.js": "assets/icon-arrow-down-CZkp3OgT.js",
+    "https://app.sibill.com/assets/SearchNotFound-Da9Vfh-i.js": "assets/SearchNotFound-Da9Vfh-i.js",
+    "https://app.sibill.com/assets/SearchNotFound-Sj2cR_uA.css": "assets/SearchNotFound-Sj2cR_uA.css",
+    "https://app.sibill.com/assets/RuleListHeader-C9aT2UTf.css": "assets/RuleListHeader-C9aT2UTf.css",
+    "https://app.sibill.com/assets/remove-CFAvhbC6.js": "assets/remove-CFAvhbC6.js",
+    "https://app.sibill.com/assets/TransactionsPreviewByKeywords-WnPuHbgk.js": "assets/TransactionsPreviewByKeywords-WnPuHbgk.js",
+    "https://app.sibill.com/assets/TransactionsPreviewByKeywords-Bbp7jllY.css": "assets/TransactionsPreviewByKeywords-Bbp7jllY.css",
+    "https://app.sibill.com/assets/TransactionsRulesTabs-Dw8kxUHj.js": "assets/TransactionsRulesTabs-Dw8kxUHj.js",
+    "https://app.sibill.com/assets/Tabs-7CuTaOyJ.js": "assets/Tabs-7CuTaOyJ.js",
+    "https://app.sibill.com/assets/TransactionsRulesTabs-CigVq63s.css": "assets/TransactionsRulesTabs-CigVq63s.css",
+    "https://app.sibill.com/assets/TransactionsRulesListPage-CbRPJYHn.css": "assets/TransactionsRulesListPage-CbRPJYHn.css",
+    "https://app.sibill.com/assets/ReconciliationsSection-Q1EZRsg_.js": "assets/ReconciliationsSection-Q1EZRsg_.js",
+    "https://app.sibill.com/assets/ReconciliationsSection-DEEjyS8p.css": "assets/ReconciliationsSection-DEEjyS8p.css",
+    "https://app.sibill.com/assets/AccountsSection-pEXk-fnt.js": "assets/AccountsSection-pEXk-fnt.js",
+    "https://app.sibill.com/assets/OutstandingSection-DeavJbTH.js": "assets/OutstandingSection-DeavJbTH.js",
+    "https://app.sibill.com/assets/media_sibill_scadenziario-ePXb5y7w.js": "assets/media_sibill_scadenziario-ePXb5y7w.js",
+    "https://app.sibill.com/assets/Outstanding-CfzjVNWa.js": "assets/Outstanding-CfzjVNWa.js",
+    "https://app.sibill.com/assets/FlowDetails-CNKU3BzR.js": "assets/FlowDetails-CNKU3BzR.js",
+    "https://app.sibill.com/assets/useRelatedDocuments-7H5NkjvN.js": "assets/useRelatedDocuments-7H5NkjvN.js",
+    "https://app.sibill.com/assets/attachments-v5UfP3PH.js": "assets/attachments-v5UfP3PH.js",
+    "https://app.sibill.com/assets/CounterpartComboBox-dX7qmKQr.js": "assets/CounterpartComboBox-dX7qmKQr.js",
+    "https://app.sibill.com/assets/CounterpartChildrenAssociationModal-VYdZPPP-.js": "assets/CounterpartChildrenAssociationModal-VYdZPPP-.js",
+    "https://app.sibill.com/assets/CounterpartChildrenAssociationModal-C9nWK7kS.css": "assets/CounterpartChildrenAssociationModal-C9nWK7kS.css",
+    "https://app.sibill.com/assets/CounterpartComboBox--7hwws1G.css": "assets/CounterpartComboBox--7hwws1G.css",
+    "https://app.sibill.com/assets/AssociateCreditNoteToInvoiceAlert-BSmJ_7Z6.js": "assets/AssociateCreditNoteToInvoiceAlert-BSmJ_7Z6.js",
+    "https://app.sibill.com/assets/useFlowPaymentAccountIdentifier-B5SfXfAa.js": "assets/useFlowPaymentAccountIdentifier-B5SfXfAa.js",
+    "https://app.sibill.com/assets/PaymentSummary-DGNbIVId.js": "assets/PaymentSummary-DGNbIVId.js",
+    "https://app.sibill.com/assets/PaymentSummary-CGbj2oD7.css": "assets/PaymentSummary-CGbj2oD7.css",
+    "https://app.sibill.com/assets/FlowDetails-OGVz6qdU.css": "assets/FlowDetails-OGVz6qdU.css",
+    "https://app.sibill.com/assets/MultipleItems.module-IzK-sLkN.js": "assets/MultipleItems.module-IzK-sLkN.js",
+    "https://app.sibill.com/assets/MultipleItems-BiVQudQ_.css": "assets/MultipleItems-BiVQudQ_.css",
+    "https://app.sibill.com/assets/OutstandingTabs-DhqgcSde.js": "assets/OutstandingTabs-DhqgcSde.js",
+    "https://app.sibill.com/assets/InvoicesTabs.module-Cig0S3Od.js": "assets/InvoicesTabs.module-Cig0S3Od.js",
+    "https://app.sibill.com/assets/InvoicesTabs-CuIxmoUi.css": "assets/InvoicesTabs-CuIxmoUi.css",
+    "https://app.sibill.com/assets/Outstanding-D_RWC6wJ.css": "assets/Outstanding-D_RWC6wJ.css",
+    "https://app.sibill.com/assets/RecurrencesRoute-zkWRrCiX.js": "assets/RecurrencesRoute-zkWRrCiX.js",
+    "https://app.sibill.com/assets/OutstandingRulesRoute-CSzc6tzr.css": "assets/OutstandingRulesRoute-CSzc6tzr.css",
+    "https://app.sibill.com/assets/RecurrenceList-BhcKjIwu.js": "assets/RecurrenceList-BhcKjIwu.js",
+    "https://app.sibill.com/assets/RecurrenceList-DZ0CicYi.css": "assets/RecurrenceList-DZ0CicYi.css",
+    "https://app.sibill.com/assets/OutstandingRulesRoute-CCoqb8v6.js": "assets/OutstandingRulesRoute-CCoqb8v6.js",
+    "https://app.sibill.com/assets/OutstandingRulesInitPage-T-3AoBTT.js": "assets/OutstandingRulesInitPage-T-3AoBTT.js",
+    "https://app.sibill.com/assets/document-rule-3hTiJRZm.js": "assets/document-rule-3hTiJRZm.js",
+    "https://app.sibill.com/assets/OutstandingRulesWelcomePage-BnHlC2Mw.js": "assets/OutstandingRulesWelcomePage-BnHlC2Mw.js",
+    "https://app.sibill.com/assets/emptyState-CVzf_HHU.js": "assets/emptyState-CVzf_HHU.js",
+    "https://app.sibill.com/assets/OutstandingRulesTabs-DuuRupmO.js": "assets/OutstandingRulesTabs-DuuRupmO.js",
+    "https://app.sibill.com/assets/rule-uoViy1kq.js": "assets/rule-uoViy1kq.js",
+    "https://app.sibill.com/assets/OutstandingRulesTabs-utYUmEYY.css": "assets/OutstandingRulesTabs-utYUmEYY.css",
+    "https://app.sibill.com/assets/OutstandingRulesWelcomePage-SgfmZaP0.css": "assets/OutstandingRulesWelcomePage-SgfmZaP0.css",
+    "https://app.sibill.com/assets/InvoicesSection-BrUQ4-nv.js": "assets/InvoicesSection-BrUQ4-nv.js",
+    "https://app.sibill.com/assets/InvoicesEmptyState-CqwbtyXl.js": "assets/InvoicesEmptyState-CqwbtyXl.js",
+    "https://app.sibill.com/assets/IntegrationsControl.module-Dp9E1aLO.js": "assets/IntegrationsControl.module-Dp9E1aLO.js",
+    "https://app.sibill.com/assets/IntegrationsControl-BF1bTM2p.css": "assets/IntegrationsControl-BF1bTM2p.css",
+    "https://app.sibill.com/assets/InvoicesDashboard-BIpztwcN.js": "assets/InvoicesDashboard-BIpztwcN.js",
+    "https://app.sibill.com/assets/InvoicesTabs-BPN1sndw.js": "assets/InvoicesTabs-BPN1sndw.js",
+    "https://app.sibill.com/assets/InvoicesTabs-CSiC9Jk2.css": "assets/InvoicesTabs-CSiC9Jk2.css",
+    "https://app.sibill.com/assets/useInvoicingUpsellConfirmationModal-CO_VLe3j.js": "assets/useInvoicingUpsellConfirmationModal-CO_VLe3j.js",
+    "https://app.sibill.com/assets/InvoicesDashboard-DPECUlRx.css": "assets/InvoicesDashboard-DPECUlRx.css",
+    "https://app.sibill.com/assets/Invoices-BSvoJH6G.js": "assets/Invoices-BSvoJH6G.js",
+    "https://app.sibill.com/assets/InvoicePaymentStatusIcon-C3XRlsYb.js": "assets/InvoicePaymentStatusIcon-C3XRlsYb.js",
+    "https://app.sibill.com/assets/InvoicePaymentStatusIcon-DVK8WcUk.css": "assets/InvoicePaymentStatusIcon-DVK8WcUk.css",
+    "https://app.sibill.com/assets/DocumentsAsideContent-CJvvdDXq.js": "assets/DocumentsAsideContent-CJvvdDXq.js",
+    "https://app.sibill.com/assets/DocumentsAsideContent-DeplyVoM.css": "assets/DocumentsAsideContent-DeplyVoM.css",
+    "https://app.sibill.com/assets/Invoices-BkSOMR9P.css": "assets/Invoices-BkSOMR9P.css",
+    "https://app.sibill.com/assets/Bills-DG4vkZ2h.js": "assets/Bills-DG4vkZ2h.js",
+    "https://app.sibill.com/assets/Bills-CWoV2lZk.css": "assets/Bills-CWoV2lZk.css",
+    "https://app.sibill.com/assets/CounterpartsSection-V4mcPBx1.js": "assets/CounterpartsSection-V4mcPBx1.js",
+    "https://app.sibill.com/assets/EditCounterpartModal-DOV_IIIf.js": "assets/EditCounterpartModal-DOV_IIIf.js",
+    "https://app.sibill.com/assets/CounterpartsSection-Cn7Af5uU.css": "assets/CounterpartsSection-Cn7Af5uU.css",
+    "https://app.sibill.com/assets/Profile-BZH-CSDu.js": "assets/Profile-BZH-CSDu.js",
+    "https://app.sibill.com/assets/Profile.module-DXbVAHT-.js": "assets/Profile.module-DXbVAHT-.js",
+    "https://app.sibill.com/assets/Profile-39W9KEtn.css": "assets/Profile-39W9KEtn.css",
+    "https://app.sibill.com/assets/CompanyData-3hP3nUtp.js": "assets/CompanyData-3hP3nUtp.js",
+    "https://app.sibill.com/assets/icon-save-U0A8QCxa.js": "assets/icon-save-U0A8QCxa.js",
+    "https://app.sibill.com/assets/DefaultValues-D6d45RHo.js": "assets/DefaultValues-D6d45RHo.js",
+    "https://app.sibill.com/assets/VatComboBox-sgO1yczw.js": "assets/VatComboBox-sgO1yczw.js",
+    "https://app.sibill.com/assets/StampTypeSelect-DTdrcQnl.js": "assets/StampTypeSelect-DTdrcQnl.js",
+    "https://app.sibill.com/assets/DefaultValues-CfmvXThd.css": "assets/DefaultValues-CfmvXThd.css",
+    "https://app.sibill.com/assets/InvoicesInfo-D1NR6Emr.js": "assets/InvoicesInfo-D1NR6Emr.js",
+    "https://app.sibill.com/assets/icon-rocket-CrXUTtOw.js": "assets/icon-rocket-CrXUTtOw.js",
+    "https://app.sibill.com/assets/InvoicesInfo-CQp610Au.css": "assets/InvoicesInfo-CQp610Au.css",
+    "https://app.sibill.com/assets/media_invoicing_variant-CakAX7JK.png": "assets/media_invoicing_variant-CakAX7JK.png",
+    "https://app.sibill.com/assets/ImportInvoices-D8PSKryu.js": "assets/ImportInvoices-D8PSKryu.js",
+    "https://app.sibill.com/assets/index-CEkZLplf.js": "assets/index-CEkZLplf.js",
+    "https://app.sibill.com/assets/ImportInvoices-Y28zZCYG.css": "assets/ImportInvoices-Y28zZCYG.css",
+    "https://app.sibill.com/assets/f24-Pp1rOSfa.png": "assets/f24-Pp1rOSfa.png",
+    "https://app.sibill.com/assets/f24_upload-BbaVcC33.png": "assets/f24_upload-BbaVcC33.png",
+    "https://app.sibill.com/assets/f24_sign-DjriMPa2.png": "assets/f24_sign-DjriMPa2.png",
+    "https://app.sibill.com/assets/f24_payment-DRk7-Jdp.png": "assets/f24_payment-DRk7-Jdp.png",
+    "https://app.sibill.com/assets/SettingsSection-DUVjpCWa.js": "assets/SettingsSection-DUVjpCWa.js",
+    "https://app.sibill.com/assets/Team-BEWsRNBs.js": "assets/Team-BEWsRNBs.js",
+    "https://app.sibill.com/assets/DialCodeController-B_alHWMG.js": "assets/DialCodeController-B_alHWMG.js",
+    "https://app.sibill.com/assets/userPersonalData-ElKx8KqC.js": "assets/userPersonalData-ElKx8KqC.js",
+    "https://app.sibill.com/assets/Team-CtccKY_C.css": "assets/Team-CtccKY_C.css",
+    "https://app.sibill.com/assets/ReferralSection-Cts2BK0S.js": "assets/ReferralSection-Cts2BK0S.js",
+    "https://app.sibill.com/assets/ReferralPage-D_5t16QS.js": "assets/ReferralPage-D_5t16QS.js",
+    "https://app.sibill.com/assets/ReferralPage-E3gvwI87.css": "assets/ReferralPage-E3gvwI87.css",
+    "https://app.sibill.com/assets/media-referral-D66x1Mxf.png": "assets/media-referral-D66x1Mxf.png"
+  },
+  "fontRoutes": {
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwTs572Xtc6ZYQws9YVwnNDTJPax9k0.woff2": "fonts/ijwTs572Xtc6ZYQws9YVwnNDTJPax9k0.woff2",
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwTs572Xtc6ZYQws9YVwnNDTJLax9k0.woff2": "fonts/ijwTs572Xtc6ZYQws9YVwnNDTJLax9k0.woff2",
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwTs572Xtc6ZYQws9YVwnNDTJzaxw.woff2": "fonts/ijwTs572Xtc6ZYQws9YVwnNDTJzaxw.woff2",
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwRs572Xtc6ZYQws9YVwnNJfJ7Cww.woff2": "fonts/ijwRs572Xtc6ZYQws9YVwnNJfJ7Cww.woff2",
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwRs572Xtc6ZYQws9YVwnNIfJ7Cww.woff2": "fonts/ijwRs572Xtc6ZYQws9YVwnNIfJ7Cww.woff2",
+    "https://fonts.gstatic.com/s/publicsans/v21/ijwRs572Xtc6ZYQws9YVwnNGfJ4.woff2": "fonts/ijwRs572Xtc6ZYQws9YVwnNGfJ4.woff2",
+    "https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,300;1,400;1,500;1,600;1,700;1,800&display=swap": "fonts/public-sans.css",
+    "https://fonts.googleapis.com/css?family=Noto+Sans+Symbols:wght@100;200;300&display=swap&text=%E2%9E%80%E2%9E%81%E2%9E%82%E2%9E%83%E2%9E%84%E2%9E%85%E2%9E%86%E2%9E%87%E2%9E%88%E2%9E%89%E2%91%AA%E2%91%AB%E2%91%AC%E2%91%AD%E2%91%AE%E2%91%AF%E2%91%B0%E2%91%B1%E2%91%B2%E2%91%B3%E2%9E%8A%E2%9E%8B%E2%9E%8C%E2%9E%8D%E2%9E%8E%E2%9E%8F%E2%9E%90%E2%9E%91%E2%9E%92%E2%9E%93%E2%93%AB%E2%93%AC%E2%93%AD%E2%93%AE%E2%93%AF%E2%93%B0%E2%93%B1%E2%93%B2%E2%93%B3%E2%93%B4": "fonts/noto-sans-symbols.css",
+    "https://fonts.googleapis.com/css?family=Noto+Sans&display=swap&text=0123456789": "fonts/noto-sans.css"
+  }
+}

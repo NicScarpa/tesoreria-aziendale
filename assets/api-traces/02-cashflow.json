@@ -1,0 +1,80 @@
+{
+  "section": "Cashflow / Dashboard",
+  "url": "https://app.sibill.com/cashflow",
+  "timestamp": "2026-02-10T13:56:41.820788Z",
+  "total_requests_observed": 6,
+  "unique_endpoints": 2,
+  "apis": [
+    {
+      "endpoint": "/api/v1/cashflow/chart",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "timezone": "Europe/Rome",
+          "from": "2025-08-31T22:00:00.000Z",
+          "to": "2026-08-31T21:59:59.999Z",
+          "includeBudgets": "false",
+          "includeOverdue": "false",
+          "includePastdue": "false"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": null,
+          "is_collection": true,
+          "fields": [],
+          "relationships": {},
+          "included_types": [],
+          "pagination": null,
+          "meta": null
+        }
+      },
+      "notes": "Visto 2 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/cashflow/table",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[date__gte]": "2025-08-31T22:00:00.000Z",
+          "filter[date__lte]": "2026-08-31T21:59:59.999Z",
+          "filter[hiddenAt__empty]": "true",
+          "timezone": "Europe/Rome",
+          "includeBudgets": "false",
+          "includeOverdue": "false",
+          "includePastdue": "false"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": null,
+          "is_collection": true,
+          "fields": [],
+          "relationships": {},
+          "included_types": [],
+          "pagination": null,
+          "meta": null
+        }
+      },
+      "notes": "Visto 4 volte. Status osservati: [200]"
+    }
+  ]
+}

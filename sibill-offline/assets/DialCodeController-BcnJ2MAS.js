@@ -1,0 +1,2 @@
+import{dL as m,j as p,dM as u}from"./index-C7GZzpi3.js";const D=({className:s,control:r,disabled:i,helperText:o,label:l,name:a,required:t,rules:d,style:n})=>{const{field:x,fieldState:e}=m({name:a,control:r,rules:d});return p.jsx(u,{...x,className:s,isDisabled:i,label:l,isRequired:t,isInvalid:e.invalid,errorMessage:e.error?.message,helpText:o,style:n})};export{D};
+//# sourceMappingURL=DialCodeController-BcnJ2MAS.js.map

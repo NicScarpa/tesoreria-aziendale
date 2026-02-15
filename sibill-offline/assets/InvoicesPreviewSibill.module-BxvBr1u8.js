@@ -1,0 +1,2 @@
+const n="_container_1nrzo_1",r="_main_1nrzo_12",e="_innerContainer_1nrzo_21",o="_previewContainer_1nrzo_39",t="_previewHeader_1nrzo_51",i="_hidden_1nrzo_60",_="_confirmContainer_1nrzo_64",a="_lastNumber_1nrzo_77",s="_lastNumbers_1nrzo_81",c="_lastInvoiceErrorNumber_1nrzo_86",m="_actions_1nrzo_90",z={container:n,main:r,innerContainer:e,previewContainer:o,previewHeader:t,hidden:i,confirmContainer:_,lastNumber:a,lastNumbers:s,lastInvoiceErrorNumber:c,actions:m};export{z as s};
+//# sourceMappingURL=InvoicesPreviewSibill.module-BxvBr1u8.js.map

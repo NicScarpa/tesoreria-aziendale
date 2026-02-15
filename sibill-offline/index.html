@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sibill - Replica Offline</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        #offline-banner {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99999;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        #offline-banner .close-btn {
+            float: right;
+            cursor: pointer;
+            opacity: 0.8;
+            margin-left: 16px;
+        }
+        #offline-banner .close-btn:hover { opacity: 1; }
+
+        #loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+        #loading h1 { font-size: 24px; margin-bottom: 16px; }
+        #loading p { color: #666; margin-bottom: 8px; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #ff6b35;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        nav#offline-nav {
+            background: #1a1a2e;
+            padding: 10px 24px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            margin-top: 36px;
+            flex-wrap: wrap;
+        }
+        nav#offline-nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        nav#offline-nav a:hover, nav#offline-nav a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        nav#offline-nav .brand {
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+            margin-right: 20px;
+        }
+        nav#offline-nav .sep {
+            color: rgba(255,255,255,0.2);
+            margin: 0 4px;
+        }
+
+        #app-frame {
+            width: 100%;
+            height: calc(100vh - 84px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="offline-banner">
+        REPLICA OFFLINE — Dati congelati al 11/02/2026 23:44
+        <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+
+    <nav id="offline-nav">
+        <span class="brand">Sibill Offline</span>
+        <a href="#conti" onclick="navigate('transactions/movements', this)">Movimenti</a>
+        <a href="#pagamenti" onclick="navigate('transactions/payments', this)">Pagamenti</a>
+        <span class="sep">|</span>
+        <a href="#cashflow" onclick="navigate('cashflow', this)">Cashflow</a>
+        <a href="#scadenze" onclick="navigate('outstanding', this)">Scadenze</a>
+        <span class="sep">|</span>
+        <a href="#fatture" onclick="navigate('invoices/dashboard', this)">Fatture</a>
+        <a href="#import" onclick="navigate('invoices/import', this)">Import</a>
+        <a href="#f24" onclick="navigate('f24', this)">F24</a>
+        <span class="sep">|</span>
+        <a href="#controparti" onclick="navigate('counterparts', this)">Controparti</a>
+        <a href="#riconciliazioni" onclick="navigate('reconciliations', this)">Riconciliazioni</a>
+        <span class="sep">|</span>
+        <a href="#conti" onclick="navigate('accounts', this)">Gestisci Conti</a>
+        <a href="#regole" onclick="navigate('transactions/rules/inflow/list', this)">Regole</a>
+        <a href="#impostazioni" onclick="navigate('settings', this)">Impostazioni</a>
+        <a href="#profilo" onclick="navigate('invoices/profile/company-data', this)">Profilo</a>
+    </nav>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <h1>Sibill Offline</h1>
+        <p>Registrazione Service Worker...</p>
+        <p id="sw-status"></p>
+    </div>
+
+    <iframe id="app-frame" style="display:none"></iframe>
+
+    <script>
+        const SW_STATUS = document.getElementById('sw-status');
+        const LOADING = document.getElementById('loading');
+        const FRAME = document.getElementById('app-frame');
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(reg => {
+                    console.log('[App] SW registered:', reg.scope);
+                    SW_STATUS.textContent = 'Service Worker registrato!';
+
+                    // Wait for activation
+                    if (reg.active) {
+                        onReady();
+                    } else {
+                        const sw = reg.installing || reg.waiting;
+                        sw.addEventListener('statechange', () => {
+                            if (sw.state === 'activated') onReady();
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('[App] SW registration failed:', err);
+                    SW_STATUS.textContent = 'Errore: ' + err.message;
+                });
+        } else {
+            SW_STATUS.textContent = 'Service Worker non supportato dal browser';
+        }
+
+        function onReady() {
+            SW_STATUS.textContent = 'Pronto!';
+            setTimeout(() => {
+                LOADING.style.display = 'none';
+                FRAME.style.display = 'block';
+                // Load default page
+                navigate('cashflow', document.querySelector('a[href="#cashflow"]'));
+            }, 500);
+        }
+
+        function navigate(path, el) {
+            FRAME.src = '/' + path;
+            // Update active nav link
+            document.querySelectorAll('#offline-nav a').forEach(a => a.classList.remove('active'));
+            if (el) el.classList.add('active');
+        }
+
+        // Log all SW misses
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            if (event.data.type === 'miss') {
+                console.warn('[MISS]', event.data.url);
+            }
+        });
+    </script>
+</body>
+</html>

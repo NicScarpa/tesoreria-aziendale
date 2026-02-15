@@ -1,0 +1,75 @@
+{
+  "section": "Pagamenti",
+  "url": "https://app.sibill.com/transactions/payments",
+  "timestamp": "2026-02-10T13:56:41.821569Z",
+  "total_requests_observed": 30,
+  "unique_endpoints": 2,
+  "apis": [
+    {
+      "endpoint": "/api/v1/payments",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[status__in]": "ACCEPTED,PENDING,FAILED,SUCCEEDED,TIMEOUT",
+          "sort": "-createdAt",
+          "include": "account,account.consent,account.consent.institution,counterpart,attachments,transactions,parent,retry_attempts",
+          "page[size]": "50"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "is_jsonapi": true,
+          "entity_type": null,
+          "is_collection": true,
+          "fields": [],
+          "relationships": {},
+          "included_types": [],
+          "pagination": {
+            "page": {
+              "size": 50,
+              "cursor": null
+            }
+          },
+          "meta": {
+            "page": {
+              "size": "integer",
+              "cursor": "null"
+            }
+          }
+        }
+      },
+      "notes": "Visto 1 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/payments/metadata",
+      "method": "GET",
+      "trigger": "page load - metadata fetch",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[status__in]": "TIMEOUT"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "total": "integer"
+        }
+      },
+      "notes": "Visto 29 volte. Status osservati: [0, 200]"
+    }
+  ]
+}

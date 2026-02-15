@@ -1,0 +1,170 @@
+{
+  "timestamp": "2026-02-11T14:58:50.400Z",
+  "totalPages": 23,
+  "successful": 23,
+  "failed": 0,
+  "totalApis": 768,
+  "pages": [
+    {
+      "path": "/cashflow",
+      "label": "Cashflow",
+      "actualUrl": "https://app.sibill.com/cashflow",
+      "screenshot": "01-cashflow.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/cashflow/categories",
+      "label": "Categorie Cashflow",
+      "actualUrl": "https://app.sibill.com/cashflow/categories",
+      "screenshot": "02-cashflow-categories.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/transactions/movements",
+      "label": "Movimenti Bancari",
+      "actualUrl": "https://app.sibill.com/transactions/movements",
+      "screenshot": "03-transactions-movements.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/transactions/payments",
+      "label": "Pagamenti",
+      "actualUrl": "https://app.sibill.com/transactions/payments",
+      "screenshot": "04-transactions-payments.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/transactions/rules",
+      "label": "Regole Categorizzazione",
+      "actualUrl": "https://app.sibill.com/transactions/rules/inflow/list",
+      "screenshot": "05-transactions-rules.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/reconciliations",
+      "label": "Riconciliazioni",
+      "actualUrl": "https://app.sibill.com/reconciliations",
+      "screenshot": "06-reconciliations.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/accounts",
+      "label": "Conti Bancari",
+      "actualUrl": "https://app.sibill.com/accounts",
+      "screenshot": "07-accounts.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/outstanding",
+      "label": "Scadenzario",
+      "actualUrl": "https://app.sibill.com/outstanding",
+      "screenshot": "08-outstanding.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/outstanding/recurrences/received",
+      "label": "Ricorrenze Ricevute",
+      "actualUrl": "https://app.sibill.com/outstanding/recurrences/received",
+      "screenshot": "09-outstanding-recurrences-received.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/outstanding/recurrences/issued",
+      "label": "Ricorrenze Emesse",
+      "actualUrl": "https://app.sibill.com/outstanding/recurrences/issued",
+      "screenshot": "10-outstanding-recurrences-issued.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/outstanding/rules",
+      "label": "Regole Scadenzario",
+      "actualUrl": "https://app.sibill.com/outstanding/rules/issued/welcome",
+      "screenshot": "11-outstanding-rules.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/dashboard",
+      "label": "Dashboard Fatture",
+      "actualUrl": "https://app.sibill.com/invoices/dashboard",
+      "screenshot": "12-invoices-dashboard.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/invoices/issued",
+      "label": "Fatture Emesse",
+      "actualUrl": "https://app.sibill.com/invoices/issued",
+      "screenshot": "13-invoices-issued.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/received",
+      "label": "Fatture Ricevute",
+      "actualUrl": "https://app.sibill.com/invoices/received",
+      "screenshot": "14-invoices-received.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/bills",
+      "label": "Corrispettivi",
+      "actualUrl": "https://app.sibill.com/invoices/bills",
+      "screenshot": "15-invoices-bills.png",
+      "apisTriggered": 4
+    },
+    {
+      "path": "/counterparts",
+      "label": "Controparti",
+      "actualUrl": "https://app.sibill.com/counterparts",
+      "screenshot": "16-counterparts.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/profile/company-data",
+      "label": "Profilo Fatturazione",
+      "actualUrl": "https://app.sibill.com/invoices/profile/company-data",
+      "screenshot": "17-invoices-profile-company-data.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/profile/defaults",
+      "label": "Default Fatturazione",
+      "actualUrl": "https://app.sibill.com/invoices/profile/defaults",
+      "screenshot": "18-invoices-profile-defaults.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/invoices/info",
+      "label": "Crea Fattura",
+      "actualUrl": "https://app.sibill.com/invoices/info",
+      "screenshot": "19-invoices-info.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/invoices/import",
+      "label": "Import Fatture",
+      "actualUrl": "https://app.sibill.com/invoices/import",
+      "screenshot": "20-invoices-import.png",
+      "apisTriggered": 0
+    },
+    {
+      "path": "/f24",
+      "label": "F24",
+      "actualUrl": "https://app.sibill.com/f24",
+      "screenshot": "21-f24.png",
+      "apisTriggered": 6
+    },
+    {
+      "path": "/settings/team",
+      "label": "Team",
+      "actualUrl": "https://app.sibill.com/settings/team",
+      "screenshot": "22-settings-team.png",
+      "apisTriggered": 3
+    },
+    {
+      "path": "/referral",
+      "label": "Referral",
+      "actualUrl": "https://app.sibill.com/referral",
+      "screenshot": "23-referral.png",
+      "apisTriggered": 0
+    }
+  ]
+}

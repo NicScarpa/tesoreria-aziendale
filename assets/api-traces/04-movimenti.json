@@ -1,0 +1,121 @@
+{
+  "section": "Movimenti",
+  "url": "https://app.sibill.com/transactions/movements",
+  "timestamp": "2026-02-10T13:56:41.821200Z",
+  "total_requests_observed": 6,
+  "unique_endpoints": 3,
+  "apis": [
+    {
+      "endpoint": "/api/v1/transactions",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[account.hiddenAt__empty]": "true",
+          "sort": "-date,-createdAt,-id",
+          "include": "account,account.consent.institution,allocations,allocations.category,allocations.subcategory,attachments,card,category,reconciliations,subcategory,payment,payment.attachments",
+          "page[size]": "50"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": "string"
+      },
+      "notes": "Visto 3 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/transactions/metadata",
+      "method": "GET",
+      "trigger": "page load - metadata fetch",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[company.id__eq]": "14196c00-6ac1-4bab-9874-9b01c2fe17a7",
+          "filter[account.id__in]": "fd828a13-c337-4523-9dab-f0acc3f895b6"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": {
+          "total": "integer",
+          "totals": [
+            {
+              "positive": {
+                "currency": "string",
+                "amount": "string"
+              },
+              "currency": "string",
+              "negative": {
+                "currency": "string",
+                "amount": "string"
+              }
+            }
+          ],
+          "totalsEur": {
+            "positive": {
+              "currency": "string",
+              "amount": "string"
+            },
+            "currency": "string",
+            "negative": {
+              "currency": "string",
+              "amount": "string"
+            }
+          },
+          "totalUncategorised": "integer",
+          "totalsEurSucceeded": {
+            "positive": {
+              "currency": "string",
+              "amount": "string"
+            },
+            "currency": "string",
+            "negative": {
+              "currency": "string",
+              "amount": "string"
+            }
+          }
+        }
+      },
+      "notes": "Visto 1 volte. Status osservati: [200]"
+    },
+    {
+      "endpoint": "/api/v1/transactions/reconciliations",
+      "method": "GET",
+      "trigger": "filter change",
+      "request": {
+        "headers": {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json"
+        },
+        "params": {
+          "filter[id__in]": "f60910f0-35e5-4225-8fee-c5c41b191224,88be70e4-e0f3-4f60-97c1-064ca66525b5,44091c7a-28f4-4bca-aade-571b5d86b485,16093570-8d09-49cf-afe4-0227a7b8a36f,f445ebb1-3bf4-416c-8266-c326277a1f2f,f09b0fb0-3815-4ced-a6f9-f154222836ba,be2a7ca1-7ebd-430e-862f-11a4a466f93d,bc7a77ca-b138-4585-bc2c-967b22deea99,98a32f99-bd6d-4918-8d3b-daf05bee42ef,906414c5-27f4-4d3c-8f84-3a25a6ffabff,71b79ef2-d278-46c1-a0c7-ee3a31172d40,5bb19c3f-97f5-423f-a5e1-5dafe94e0dfc,357d454a-2d14-4084-83a2-14d9795f8b23,1b5cfab8-934f-491f-bc80-d5cf7cdab346,16872ad8-dc20-4f1d-9d9f-d85460b0c108,8aefeb6d-4f0f-49fd-a859-cf0d0f1af65f,43312e17-8bab-4c22-99dc-8d5d6306ee96,35033ca7-44d9-4bbc-8072-5eff20dd400e,f8cd3c2c-9fad-46b9-be3a-be8c770592a4,c690f9b3-0a4c-49c8-8749-4e6cea03990a,c6ee1de7-04e1-453f-a9db-ee14a9a631b7",
+          "filter[verificationStatus__eq]": "TO_VERIFY"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body_structure": [
+          {
+            "transaction_id": "string",
+            "flow_ids": [
+              "string"
+            ]
+          },
+          "... (14 items)"
+        ]
+      },
+      "notes": "Visto 2 volte. Status osservati: [200]"
+    }
+  ]
+}

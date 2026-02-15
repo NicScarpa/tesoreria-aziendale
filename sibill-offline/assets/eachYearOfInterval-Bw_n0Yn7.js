@@ -1,0 +1,2 @@
+import{fE as u,h2 as d}from"./index-DS9gJP3A.js";function i(n,s){const[e,r]=u(n,s.start,s.end);return{start:e,end:r}}function f(n,s){const{start:e,end:r}=i(s?.in,n);let a=+e>+r;const c=a?+e:+r,t=a?r:e;t.setHours(0,0,0,0),t.setMonth(0,1);let l=1;const o=[];for(;+t<=c;)o.push(d(e,t)),t.setFullYear(t.getFullYear()+l);return a?o.reverse():o}export{f as e,i as n};
+//# sourceMappingURL=eachYearOfInterval-Bw_n0Yn7.js.map
